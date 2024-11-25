@@ -1,4 +1,4 @@
-package org.example.e_commerceproject.models;
+package org.example.e_commerceproject.model;
 import jakarta.persistence.*;
 @Entity
 public class Category {

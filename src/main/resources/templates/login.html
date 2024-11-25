@@ -2,18 +2,131 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0; /* Light gray background */
+            color: #333; /* Dark text color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h2 {
+            color: #c0392b; /* Red color for the heading */
+        }
+
+        .login-container {
+            background-color: #fff; /* White background for the form */
+            border: 1px solid #c0392b; /* Red border */
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 300px; /* Fixed width for the form */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%; /* Full width */
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #c0392b; /* Red border */
+            border-radius: 4px;
+            box-sizing: border-box; /* Include padding and border in element's total width and height */
+        }
+
+        button {
+            background-color: #c0392b; /* Red button */
+            color: white; /* White text */
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%; /* Full width */
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #a93226; /* Darker red on hover */
+        }
+
+        #error-message {
+            color: red;
+            margin-bottom: 15px;
+        }
+
+        a {
+            color: #c0392b; /* Red link */
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        a:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+    </style>
 </head>
 <body>
-<h2>Login</h2>
-<form th:action="@{/loginAuth}" th:object="${user}" method="post">
-    <label for="email">Email:</label>
-    <input type="email" id="email" th:field="*{email}" placeholder="Enter Email" required><br><br>
+<div class="login-container">
+    <h2>Login</h2>
 
-    <label for="password">Password:</label>
-    <input type="password" id="password" th:field="*{password}" placeholder="Enter Password" required><br><br>
+    <!-- Placeholder for error message -->
+    <div id="error-message" th:if="${error}" th:text="${error}" style="color: red;"></div>
 
-    <button type="submit">Login</button>
-</form>
-<a href="/register">Don't have an account? Register here</a>
+
+    <form th:action="@{/login}" th:object="${user}" method="post" onsubmit="return validateForm();">
+        <label for="email">Email:</label>
+        <input type="email" id="email" th:field="*{email}" placeholder="Enter Email" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" th:field="*{password}" placeholder="Enter Password" required><br>
+
+        <button type="submit">Login</button>
+    </form>
+    <a href="/register">Don't have an account? Register here</a>
+</div>
+
+<script>
+    // Display an error message dynamically
+    function showError(message) {
+        const errorMessageDiv = document.getElementById("error-message");
+        errorMessageDiv.innerText = message; // Set the error message
+        errorMessageDiv.style.display = "block"; // Make it visible
+    }
+
+    // Example form validation using JavaScript
+    function validateForm() {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        // Basic validation (you can replace this with your own logic)
+        if (!email || !password) {
+            showError("Email and password are required.");
+            return false; // Prevent form submission
+        }
+
+        // Clear the error message if validation passes
+        document.getElementById("error-message").style.display = "none";
+        return true; // Allow form submission
+    }
+
+    // Example: Display error message from server-side using Thymeleaf
+    document.addEventListener("DOMContentLoaded", function () {
+        const errorMessage = /*[[${errorMessage}]]*/ 'null'; // Replace 'null' with errorMessage from Thymeleaf
+        if (errorMessage !== 'null') {
+            showError(errorMessage);
+        }
+    });
+</script>
 </body>
 </html>

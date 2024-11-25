@@ -1,7 +1,6 @@
-package org.example.e_commerceproject.models;
+package org.example.e_commerceproject.model;
 
 import jakarta.persistence.*;
-import oracle.sql.TIMESTAMP;
 
 import java.time.LocalDateTime;
 

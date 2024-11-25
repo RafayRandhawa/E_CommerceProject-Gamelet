@@ -1,12 +1,11 @@
-package org.example.e_commerceproject.repositories;
+package org.example.e_commerceproject.repository;
 
-import org.example.e_commerceproject.models.Review;
+import org.example.e_commerceproject.model.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
@@ -15,7 +14,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByProduct_ProductId(Long productId);
 
     // Find Reviews by User ID
-    List<Review> findByUser_Id(Long userId);
+    //List<Review> findByUser_Id(Long userId);
 
     // Find Reviews by Rating
     List<Review> findByRating(Integer rating);
@@ -36,5 +35,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByReviewDateBefore(LocalDate date);
 
     // Find a Single Review by Product ID and User ID
-    Optional<Review> findByProduct_ProductIdAndUser_Id(Long productId, Long userId);
+    //Optional<Review> findByProduct_ProductIdAndUser_Id(Long productId, Long userId);
 }

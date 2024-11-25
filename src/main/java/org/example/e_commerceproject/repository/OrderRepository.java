@@ -1,6 +1,6 @@
-package org.example.e_commerceproject.repositories;
+package org.example.e_commerceproject.repository;
 
-import org.example.e_commerceproject.models.Order;
+import org.example.e_commerceproject.model.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +11,7 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
     // Find Orders by User
-    List<Order> findByUserId(Long userId);
+    //List<Order> findByUserId(Long userId);
 
     // Find Orders by Status
     List<Order> findByStatus(String status);
@@ -20,11 +20,11 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByOrderDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 
     // Find Orders by User and Status
-    List<Order> findByUserIdAndStatus(Long userId, String status);
+    //List<Order> findByUserIdAndStatus(Long userId, String status);
 
     // Count Orders by Status
     Long countByStatus(String status);
 
     // Find Orders by User and Date Range
-    List<Order> findByUserIdAndOrderDateBetween(Long userId, LocalDateTime startDate, LocalDateTime endDate);
+    //List<Order> findByUserIdAndOrderDateBetween(Long userId, LocalDateTime startDate, LocalDateTime endDate);
 }

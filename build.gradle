@@ -27,6 +27,7 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     implementation files('libs/ojdbc17.jar')
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    
 }
 
 tasks.named('test') {

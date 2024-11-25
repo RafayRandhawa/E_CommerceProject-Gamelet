@@ -1,6 +1,6 @@
-package org.example.e_commerceproject.repositories;
+package org.example.e_commerceproject.repository;
 
-import org.example.e_commerceproject.models.Shipping;
+import org.example.e_commerceproject.model.Shipping;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,54 +1,65 @@
 package org.example.e_commerceproject.controllers;
-
-import org.example.e_commerceproject.models.User;
-import org.example.e_commerceproject.repositories.UserRepository;
+import org.example.e_commerceproject.model.User;
+import org.example.e_commerceproject.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDateTime;
-import java.util.Objects;
-
-
 @Controller
 public class LoginController {
     @Autowired
-    private UserRepository userRepository;
+    private LoginService loginService;
+
     @GetMapping("/login")
-    public String login(Model model){
+    public String login(Model model) {
         model.addAttribute("user", new User());
+        model.addAttribute("error",null);
         return "login";
     }
-    @PostMapping("/loginAuth")
-    public String loginAuth(@ModelAttribute("user") User user, Model model){
 
-        if (userRepository.findByEmail(user.getEmail()).isPresent()&&Objects.equals(userRepository.findByEmail(user.getEmail()).get().getRole(), "USER")){
-            return "home";
-        }
-        else if(userRepository.findByEmail(user.getEmail()).isPresent()&&Objects.equals(userRepository.findByEmail(user.getEmail()).get().getRole(), "ADMIN")){
-            return "adminPanel";
-        }
-        else{
-            model.addAttribute("error","Invalid email or password");
-            return "login";
-        }
+    @PostMapping("/login")
+    public String loginAuth(@ModelAttribute("user") User user, Model model) {
+        String validationStatus = loginService.validateUser(user.getEmail(), user.getPassword());
+
+        return switch (validationStatus) {
+            case "USER" -> "home";
+            case "ADMIN" -> "adminPanel";
+            case "INVALID_USER", "INVALID_PASSWORD" -> {
+                model.addAttribute("error", "Invalid Email or Password");
+                yield "login";
+            }
+            default -> {
+                model.addAttribute("error", "Unexpected error occurred");
+                yield "login";
+            }
+        };
     }
     @GetMapping("/register")
-    public String register(Model model){
-        model.addAttribute("user",new User());
+    public String register(Model model) {
+        model.addAttribute("user", new User());
         return "register";
     }
+
     @PostMapping("/register")
-    public String register(@ModelAttribute User user,@RequestParam String confirmPassword, Model model){
+    public String register(@ModelAttribute User user, @RequestParam String confirmPassword, Model model) {
         if (!user.getPassword().equals(confirmPassword)) {
             model.addAttribute("error", "Passwords do not match!");
-            return "register"; // Return to the registration page if passwords don't match
+            return "register";
+        }
+
+        if (!loginService.isEmailUnique(user.getEmail())) {
+            model.addAttribute("error", "Email is already in use!");
+            return "register";
+        }
+
+        if (!loginService.isPhoneUnique(user.getPhone())) {
+            model.addAttribute("error", "Phone number is already in use!");
+            return "register";
         }
 
         user.setCreated_at(LocalDateTime.now());
-        userRepository.save(user);
+        loginService.registerUser(user);
         return "redirect:/login";
     }
 }

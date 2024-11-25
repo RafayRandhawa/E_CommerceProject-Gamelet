@@ -1,5 +1,5 @@
-package org.example.e_commerceproject.repositories;
-import org.example.e_commerceproject.models.Cart;
+package org.example.e_commerceproject.repository;
+import org.example.e_commerceproject.model.Cart;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,10 +12,10 @@ import java.util.List;
 public interface CartRepository extends JpaRepository<Cart, Long> {
 
     // Find cart by user ID
-    Cart findByUserId(Long userId);
+    //Cart findByUserId(Long userId);
 
     // Find active carts by user ID
-    List<Cart> findByUserIdAndIsActive(Long userId, Boolean isActive);
+    //List<Cart> findByUserIdAndIsActive(Long userId, Boolean isActive);
 
     // Find all active carts
     List<Cart> findByIsActive(Boolean isActive);
@@ -25,7 +25,7 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
     Cart findByIdWithItems(@Param("cartId") Long cartId);
 
     // Count carts by user ID
-    Long countByUserId(Long userId);
+    //Long countByUserId(Long userId);
 
     // Find all carts and sort by createdAt descending
     List<Cart> findAllByOrderByCreatedAtDesc();
@@ -34,5 +34,5 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
     List<Cart> findByIsActiveAndCreatedAtBetween(Boolean isActive, LocalDateTime startDate, LocalDateTime endDate);
 
     // Find carts by user ID within a specific date range
-    List<Cart> findByUserIdAndCreatedAtBetween(Long userId, LocalDateTime startDate, LocalDateTime endDate);
+    //List<Cart> findByUserIdAndCreatedAtBetween(Long userId, LocalDateTime startDate, LocalDateTime endDate);
 }
