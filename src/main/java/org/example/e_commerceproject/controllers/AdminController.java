@@ -18,7 +18,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/admin")
 public class AdminController {
-
     @Autowired
     private AdminService adminService;
 
@@ -74,7 +73,7 @@ public class AdminController {
     }
 
     @PostMapping("/products")
-    public Product createProduct(@RequestBody Product product) {
+    public Product createProduct(@ModelAttribute Product product) {
         return adminService.saveProduct(product);
     }
 
@@ -141,6 +140,7 @@ public class AdminController {
     // Category management endpoints
     @GetMapping("/categories")
     public List<Category> getAllCategories() {
+        System.out.println(adminService.getAllCategories());
         return adminService.getAllCategories();
     }
 
@@ -150,9 +150,13 @@ public class AdminController {
         return category != null ? ResponseEntity.ok(category) : ResponseEntity.notFound().build();
     }
 
+    @PostMapping("/categories/List")
+    public void createCategoriesList(@RequestBody List<Category> categories) {
+        categories.forEach(adminService::saveCategory);
+    }
     @PostMapping("/categories")
-    public Category createCategory(@RequestBody Category category) {
-        return adminService.saveCategory(category);
+    public void createCategories(@ModelAttribute Category category) {
+        adminService.saveCategory(category);
     }
 
     @PutMapping("/categories/{id}")

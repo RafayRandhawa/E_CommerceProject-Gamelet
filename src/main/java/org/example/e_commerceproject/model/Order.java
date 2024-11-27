@@ -11,8 +11,9 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_seq")
     @SequenceGenerator(name = "order_seq", sequenceName = "ORDER_SEQ", allocationSize = 1)
     private Long orderId;
-
+    @Column(nullable = false)
     private LocalDateTime orderDate;
+    @Column(nullable = false)
     private String status;
 
     @ManyToOne
@@ -44,7 +45,7 @@ public class Order {
             )
     )
     private Payment payment;
-
+    @Column(nullable = false)
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

@@ -137,6 +137,9 @@ th {
 #logout {
     background-color: firebrick;
 }
+#logout:hover{
+    background-color: darkred;
+}
 .add-button:hover {
     background-color: #218838;
 }

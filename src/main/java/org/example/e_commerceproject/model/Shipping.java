@@ -10,12 +10,17 @@ public class Shipping {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "shipping_seq")
     @SequenceGenerator(name = "shipping_seq", sequenceName = "SHIPPING_SEQ", allocationSize = 1)
     private Long shippingId;
-
+    @Column(nullable = false)
     private String address;
+    @Column(nullable = false)
     private String city;
+    @Column(nullable = false)
     private String state;
+    @Column(nullable = false)
     private String country;
+    @Column(nullable = false)
     private String postalCode;
+    @Column(nullable = false)
     private LocalDateTime shippingDate;
 
     // Getters and Setters

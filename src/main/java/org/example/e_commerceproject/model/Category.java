@@ -6,8 +6,9 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_seq")
     @SequenceGenerator(name = "category_seq", sequenceName = "CATEGORY_SEQ", allocationSize = 1)
     private Long categoryId;
-
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = true)
     private String description;
 
     // Getters and Setters

@@ -1,6 +1,7 @@
 package org.example.e_commerceproject.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 
@@ -16,11 +17,12 @@ public class User {
     private String firstname;
     @Column(nullable = true)
     private String lastname;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
     @Column(nullable = false)
     private String password;
     @Column(nullable = false)
+    @ColumnDefault("'USER'")
     private String  role;
     @Column(nullable = false)
     private String phone;

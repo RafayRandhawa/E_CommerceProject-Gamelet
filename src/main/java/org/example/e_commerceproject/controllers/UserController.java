@@ -34,8 +34,7 @@ public class UserController {
         model.addAttribute("users", userRepository.findAll());
         return "users";
     }
-    //----------------------------------------------------------------
-    //Not Worked On
+
     @GetMapping("/editUser/{id}")
     public String showEditForm(@PathVariable("id") int id, Model model) {
         User User = userRepository.findById(id).orElseThrow(() ->
@@ -51,6 +50,8 @@ public class UserController {
         userRepository.save(user);
         return "redirect:/user";
     }
+    //----------------------------------------------------------------
+    //Not Worked On
     @GetMapping("/deleteUser/{id}")
     public String deleteEmployee(@PathVariable("id") int id) {
         userRepository.deleteById(id);

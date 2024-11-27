@@ -28,8 +28,9 @@ public class CartItem {
             )
     )
     private Product product;
-
+    @Column(nullable = false)
     private Integer quantity;
+    @Column(nullable = false)
     private Double totalPrice;
 
     // Getters and Setters

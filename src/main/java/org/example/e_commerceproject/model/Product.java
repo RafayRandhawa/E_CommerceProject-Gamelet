@@ -1,6 +1,7 @@
 package org.example.e_commerceproject.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 
@@ -15,6 +16,7 @@ public class Product {
     private String name;
 
     @Column
+    @ColumnDefault("No description")
     private String description;
 
     @Column(nullable = false)

@@ -57,9 +57,9 @@ public class LoginController {
             model.addAttribute("error", "Phone number is already in use!");
             return "register";
         }
-
+        user.setRole("USER");
         user.setCreated_at(LocalDateTime.now());
         loginService.registerUser(user);
-        return "redirect:/login";
+        return "login";
     }
 }

@@ -10,9 +10,11 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "payment_seq")
     @SequenceGenerator(name = "payment_seq", sequenceName = "PAYMENT_SEQ", allocationSize = 1)
     private Long paymentId;
-
+    @Column(nullable = false)
     private String paymentType;
+    @Column(nullable = false)
     private LocalDateTime paymentDate;
+    @Column(nullable = false)
     private Double amount;
 
     // Getters and Setters

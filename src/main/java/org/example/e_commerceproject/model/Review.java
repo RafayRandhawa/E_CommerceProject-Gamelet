@@ -31,13 +31,13 @@ public class Review {
     ) // References the "id" field in the User table
     private User user;
 
-    @Column
+    @Column(nullable = false)
     private Integer rating;
 
     @Column
     private String reviewText;
 
-    @Column
+    @Column(nullable = false)
     private LocalDate reviewDate;
 
     @Column

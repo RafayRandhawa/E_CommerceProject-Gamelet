@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
-    <script th:src="@{/js/script.js}" defer></script>
+    <script th:src="@{/js/adminPanelScript.js}" defer></script>
 </head>
 <body>
 <div class="container">
@@ -56,7 +56,7 @@
                 <div class="modal-content">
                     <span class="close" onclick="closeModal() ">&times;</span>
                     <h2>Register New User</h2>
-                    <form action="/api/admin/users" method="post" onsubmit="return validatePasswords()">
+                    <form action="/api/admin/users" method="post" onsubmit="submitUserForm(event)">
                         <label for="firstname">First Name:</label>
                         <input type="text" id="firstname" name="firstname" placeholder="Enter First Name" required><br><br>
 
@@ -95,7 +95,7 @@
                     <span class="close" onclick="closeEditUserModal()">&times;</span>
                     <h2>Edit User</h2>
                     <form id="editUserForm" onsubmit="submitEditUser (event)">
-                        <input type="hidden" id="editUser Id" name="id">
+                        <input type="hidden" id="editUserId" name="id">
                         <label for="editFirstname">First Name:</label>
                         <input type="text" id="editFirstname" name="firstname" placeholder="Enter First Name" required><br><br>
 
@@ -141,13 +141,69 @@
         </section>
         <section id="products" class="content-section hidden">
             <h2>Manage Products</h2>
-            <button class="add-button" onclick="addProduct()">Add Product</button>
+            <button class="add-button" onclick="openProductModal()">Add Product</button>
+            <div id="addProductModal" class="modal" style="display: none">
+                <div class="modal-content">
+                    <span class="close" onclick="closeProductModal()">&times;</span>
+                    <h2>Edit User</h2>
+                    <form id="addProductForm" onsubmit=" addProduct(event)">
+                        <input type="hidden" id="addProductId" name="id">
+                        <label for="addProductName">Product Name:</label>
+                        <input type="text" id="addProductName" name="name" placeholder="Enter Product Name" required><br><br>
+
+                        <label for="addPrice">Price:</label>
+                        <input type="number" id="addPrice" name="price" placeholder="Enter Price" required><br><br>
+
+                        <label for="addStockQuantity">Stock Quantity:</label>
+                        <input type="number" id="addStockQuantity" name="stockQuantity" placeholder="Enter Stock Quantity" required><br><br>
+
+                        <label for="addDescription">Category:</label>
+                        <textarea id="addDescription" name="description" placeholder="Enter Description" ></textarea><br><br>
+
+                        <label for="addCategory">Category:</label>
+                        <select id="addCategory" name="category" required>
+
+                        </select><br><br>
+
+                        <button type="submit">Add Product</button>
+                    </form>
+                </div>
+            </div>
+            <div id="editProductModal" class="modal" style="display: none">
+                <div class="modal-content">
+                    <span class="close" onclick="closeEditProductModal()">&times;</span>
+                    <h2>Edit User</h2>
+                    <form id="editProductForm" onsubmit=" editProduct(event)">
+                        <input type="hidden" id="editProductId" name="id">
+                        <label for="editProductName">Product Name:</label>
+                        <input type="text" id="editProductName" name="name" placeholder="Enter Product Name" required><br><br>
+
+                        <label for="editPrice">Price:</label>
+                        <input type="number" id="editPrice" name="price" placeholder="Enter Price" required><br><br>
+
+                        <label for="editStockQuantity">Stock Quantity:</label>
+                        <input type="number" id="editStockQuantity" name="stockQuantity" placeholder="Enter Stock Quantity" required><br><br>
+
+                        <label for="editDescription">Category:</label>
+                        <textarea id="editDescription" name="description" placeholder="Enter Description" ></textarea><br><br>
+
+                        <label for="editProductCategory">Category:</label>
+                        <select id="editProductCategory" name="category" required>
+                            <option value="">Select a Category </option>
+
+                        </select><br><br>
+
+                        <button type="submit">Add Product</button>
+                    </form>
+                </div>
+            </div>
             <table>
                 <thead>
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
                     <th>Price</th>
+                    <th>Stock Quantity</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -206,12 +262,48 @@
         </section>
         <section id="categories" class="content-section hidden">
             <h2>Manage Categories</h2>
-            <button class="add-button" onclick="addCategory()">Add Category</button>
+            <button class="add-button" onclick="openAddCategoryModal()">Add Category</button>
+            <div id="addCategoryModal" class="modal" style="display: none">
+                <div class="modal-content">
+                    <span class="close" onclick="closeAddCategoryModal()">&times;</span>
+                    <h2>Add Category</h2>
+                    <form id="addCategoryForm" onsubmit="addCategory(event)">
+                        <input type="hidden" id="addCategoryId" name="id">
+
+                        <label for="addCategoryName">Category Name:</label>
+                        <input type="text" id="addCategoryName" name="name" placeholder="Enter Category Name" required><br><br>
+
+                        <label for="addCategoryDescription">Description:</label>
+                        <textarea id="addCategoryDescription" name="description" placeholder="Enter Category Description" required></textarea><br><br>
+
+                        <button type="submit">Add Category</button>
+                    </form>
+                </div>
+            </div>
+            <div id="editCategoryModal" class="modal" style="display: none">
+                <div class="modal-content">
+                    <span class="close" onclick="closeEditCategoryModal()">&times;</span>
+                    <h2>Edit Category</h2>
+                    <form id="editCategoryForm" onsubmit="editCategory(event)">
+                        <input type="hidden" id="editCategoryId" name="id">
+
+                        <label for="editCategoryName">Category Name:</label>
+                        <input type="text" id="editCategoryName" name="name" placeholder="Enter Category Name" required><br><br>
+
+                        <label for="editCategoryDescription">Description:</label>
+                        <textarea id="editCategoryDescription" name="description" placeholder="Enter Category Description" required></textarea><br><br>
+
+                        <button type="submit">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+
             <table>
                 <thead>
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
+                    <th>Description</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -222,236 +314,6 @@
         </section>
     </main>
 </div>
-<script>
-    // Function to switch between sections
-    document.querySelectorAll('.sidebar a').forEach(link => {
-        link.addEventListener('click', function() {
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.classList.add('hidden');
-            });
-            const targetSection = document.querySelector(this.getAttribute('href'));
-            targetSection.classList.remove('hidden');
-        });
-    });
 
-    // Fetch data and populate the dashboard
-    async function populateDashboard() {
-        const users = await fetchUsers();
-        const products = await fetchProducts();
-        const orders = await fetchOrders();
-
-        document.getElementById('total-users').innerText = users.length;
-        document.getElementById('total-products').innerText = products.length;
-        document.getElementById('total-orders').innerText = orders.length;
-
-        populateUsersTable(users);
-        populateProductsTable(products);
-        populateOrdersTable(orders);
-    }
-
-    function populateUsersTable(users) {
-        const tbody = document.getElementById('users-table-body');
-        tbody.innerHTML = '';
-        users.forEach(user => {
-            const row = `<tr>
-                <td>${user.id}</td>
-                <td>${user.firstname}</td>
-                <td>${user.lastname}</td>
-                <td>${user.email}</td>
-                <td>${user.phone}</td>
-                <td>${user.address}</td>
-                <td>
-                    <button onclick="openEditUserModal(${user.id})">Edit</button>
-                    <button onclick="deleteUser (${user.id})">Delete</button>
-                </td>
-            </tr>`;
-            tbody.innerHTML += row;
-        });
-    }
-    async function deleteUser(user_id) {
-        try {
-            const response = await fetch('/addUser ', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json' // Sending JSON
-                },
-                body: JSON.stringify(user) // Convert JavaScript object to JSON
-            });
-
-            if (response.ok) {
-                alert("User  registered successfully!");
-                closeModal(); // Close the modal
-                // Optionally, you may want to refresh the user list or take other actions
-            } else {
-                alert("Failed to register user. Please try again.");
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert("An error occurred while registering the user.");
-        }
-    }
-
-
-    function populateProductsTable(products) {
-        const tbody = document.getElementById('products-table-body');
-        tbody.innerHTML = '';
-        products.forEach(product => {
-            const row = `<tr>
-                <td>${product.id}</td>
-                <td>${product.name}</td>
-                <td>$${product.price.toFixed(2)}</td>
-                <td>
-                    <button onclick="editProduct(${product.id})">Edit</button>
-                    <button onclick="deleteProduct(${product.id})">Delete</button>
-                </td>
-            </tr>`;
-            tbody.innerHTML += row;
-        });
-    }
-
-    function populateOrdersTable(orders) {
-        const tbody = document.getElementById('orders-table-body');
-        tbody.innerHTML = '';
-        orders.forEach(order => {
-            const row = `<tr>
-                <td>${order.id}</td>
-                <td>${order.user.name}</td>
-                <td>$${order.total.toFixed(2)}</td>
-                <td>${order.status}</td>
-            </tr>`;
-            tbody.innerHTML += row;
-        });
-    }
-    function validatePasswords() {
-        const password = document.getElementById("password").value;
-        const confirmPassword = document.getElementById("confirmPassword").value;
-        if (password !== confirmPassword) {
-            alert("Passwords do not match!");
-            return false;
-        }
-        return true;
-    }
-
-    function addUser () {
-        // Show the modal
-        document.getElementById("userModal").style.display = "block";
-    }
-
-    function closeModal() {
-        // Hide the modal
-        document.getElementById("userModal").style.display = "none";
-    }
-
-    window.onclick = function(event) {
-        const modal = document.getElementById("userModal");
-        if (event.target === modal) {
-            closeModal();
-        }
-    }
-
-    async function submitUserForm(event) {
-        event.preventDefault(); // Prevent the default form submission
-
-        if (!validatePasswords()) {
-            return; // Stop if passwords do not match
-        }
-
-        // Gather form data
-        const user = {
-            firstname: document.getElementById("firstname").value,
-            lastname: document.getElementById("lastname").value,
-            email: document.getElementById("email").value,
-            password: document.getElementById("password").value,
-            phone: document.getElementById("phone").value,
-            address: document.getElementById("address").value,
-            role: document.getElementById("role").value
-        };
-
-        try {
-            const response = await fetch('/addUser ', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json' // Sending JSON
-                },
-                body: JSON.stringify(user) // Convert JavaScript object to JSON
-            });
-
-            if (response.ok) {
-                alert("User  registered successfully!");
-                closeModal(); // Close the modal
-                // Optionally, you may want to refresh the user list or take other actions
-            } else {
-                alert("Failed to register user. Please try again.");
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert("An error occurred while registering the user.");
-        }
-    }
-
-    function fetchUserById(id) {
-        // Replace this with your actual API call or data retrieval logic.
-        const users = fetchUsers();
-
-        return users.find(user => user.id === id);
-    }
-
-    function openEditUserModal(userId) {
-        document.getElementById("editUserModal").style.display = "block";
-        // Fetch user data and populate the edit form
-        const user = fetchUserById(userId); // Assume this function fetches user data
-        document.getElementById("editUserId").value = user.id;
-        document.getElementById("editFirstname").value = user.firstname;
-        document.getElementById("editLastname").value = user.lastname;
-        document.getElementById("editEmail").value = user.email;
-        document.getElementById("editPhone").value = user.phone;
-        document.getElementById("editAddress").value = user.address;
-        document.getElementById("editRole").value = user.role;
-        document.getElementById("editUserModal").style.display = "block"; // Show the edit modal
-    }
-
-    function closeEditUserModal() {
-        document.getElementById("editUserModal").style.display = "none"; // Hide the edit modal
-    }
-
-    async function submitEditUser (event) {
-        event.preventDefault(); // Prevent the default form submission
-
-        const userId = document.getElementById("editUserId").value;
-        const updatedUser  = {
-            id: userId,
-            firstname: document.getElementById("editFirstname").value,
-            lastname: document.getElementById("editLastname").value,
-            email: document.getElementById("editEmail").value,
-            phone: document.getElementById("editPhone").value,
-            address: document.getElementById("editAddress").value,
-            role: document.getElementById("editRole").value
-        };
-
-        try {
-            const response = await fetch(`/api/admin/users/${userId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json' // Sending JSON
-                },
-                body: JSON.stringify(updatedUser) // Convert JavaScript object to JSON
-            });
-
-            if (response.ok) {
-                alert("User  updated successfully!");
-                closeEditUserModal(); // Close the edit modal
-                populateDashboard(); // Refresh the user list
-            } else {
-                alert("Failed to update user. Please try again.");
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert("An error occurred while updating the user.");
-        }
-    }
-
-    // Call the function to populate the dashboard on page load
-    window.onload = populateDashboard;
-</script>
 </body>
 </html>

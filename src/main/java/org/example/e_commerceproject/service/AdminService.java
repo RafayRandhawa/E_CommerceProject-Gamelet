@@ -126,8 +126,8 @@ public class AdminService {
         return categoryRepository.findById(id).orElse(null);
     }
 
-    public Category saveCategory(Category category) {
-        return categoryRepository.save(category);
+    public void saveCategory(Category category) {
+        categoryRepository.save(category);
     }
 
     public Category updateCategory(Long id, Category category) {
