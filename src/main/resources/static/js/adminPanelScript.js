@@ -186,13 +186,12 @@ function populateUsersTable(users) {
         tbody.innerHTML += row;
     });
 }
-
 function populateProductsTable(products) {
     const tbody = document.getElementById('products-table-body');
     tbody.innerHTML = '';
     products.forEach(product => {
         const row = `<tr>
-                <td>${product.id}</td>
+                <td>${product.productId}</td>
                 <td>${product.name}</td>
                 <td>$${product.price.toFixed(2)}</td>
                 <td>${product.stockQuantity}</td>
@@ -241,9 +240,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Function to populate the <select> element with fetched categories
     function populateCategorySelect(categories) {
         categories.forEach(category => {
-            console.log(category.name);
             const option = document.createElement('option');
-            option.value = category.id; // Set the value attribute
+            option.value = category.categoryId; // Set the value attribute
             option.textContent = category.name; // Set the display text
             option.placeholder = 'Select a category';
             categorySelect.appendChild(option);
@@ -274,13 +272,22 @@ function openProductModal() {
 }
 async function addProduct(event){
     event.preventDefault();
+    const categoryIdValue = document.getElementById('addCategory').value;
+    if (!categoryIdValue || isNaN(parseInt(categoryIdValue))) {
+        alert('Please select a valid category');
+        return;
+    }
+    alert(document.getElementById('addProductName').value);
     const product = {
-        productName:document.getElementById('addProductName').value,
-        price:document.getElementById('addProductPrice').value,
-        stockQuantity:document.getElementById('addProductStockQuantity').value,
+        name:document.getElementById('addProductName').value,
+        price:document.getElementById('addPrice').value,
+        stockQuantity:document.getElementById('addStockQuantity').value,
         description:document.getElementById('addDescription').value,
-        category:document.getElementById('addCategory').value
+        category:{
+            categoryId: parseInt(document.getElementById('addCategory').value)
+        }
     };
+    console.log(product);
     try{
         const response = await fetch(`${API_BASE_URL}/products`,{
            method: 'POST',
@@ -292,7 +299,7 @@ async function addProduct(event){
         if (response.ok){
             alert('Product added successfully');
             closeProductModal();
-            await populateProductsTable();
+            window.location.href = window.location.origin + window.location.pathname + "#products";
         }
         else{
             alert('Something went wrong, product could not be inserted');
@@ -300,10 +307,9 @@ async function addProduct(event){
     }
     catch (error){
         console.error(error);
-
     }
-
 }
+
 function closeEditProductModal(){document.getElementById('editProductModal').style.display='none';}
 function editProductModal(product_id) {
     document.getElementById('editProductModal').style.display = 'block';
@@ -344,6 +350,7 @@ async function editProduct(event){
         alert("An error occurred while updating the product.");
     }
 }
+
 async function deleteProduct(product_id){
     try {
         const response = await fetch(`${API_BASE_URL}/users/${product_id}`, {
@@ -379,19 +386,21 @@ function closeAddCategoryModal(){
 async function addCategory(event){
     event.preventDefault();
     const category = {
-        name:document.getElementById('addCategoryName'),
-        description:document.getElementById('addCategoryDescription')
+        name:document.getElementById('addCategoryName').value,
+        description:document.getElementById('addCategoryDescription').value
     };
+    console.log(category);
     try{
         const response = await fetch(`${API_BASE_URL}/categories`,{
            method : 'POST',
            headers:{'Content-Type': 'application/json'},
-           JSON: JSON.stringify(category)
+           body: JSON.stringify(category)
 
         });
         if (response.ok){
             alert('Category added successfully');
             closeAddCategoryModal();
+            window.location.reload();
         }
         else{
             alert('Category could not be added successfully');
@@ -470,7 +479,23 @@ async function deleteCategory(category_id){
 // User Management Functions
 // ===========================
 
-
+function validatePasswords() {
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+    if (password !== confirmPassword) {
+        alert("Passwords do not match!");
+        return false;
+    }
+    return true;
+}
+function addUser () {
+    // Show the modal
+    document.getElementById("userModal").style.display = "block";
+}
+function closeModal() {
+    // Hide the modal
+    document.getElementById("userModal").style.display = "none";
+}
 async function deleteUser (user_id) {
     try {
         const response = await fetch(`${API_BASE_URL}/users/${user_id}`, {
@@ -495,34 +520,6 @@ async function deleteUser (user_id) {
         alert("An error occurred while deleting the user.");
     }
 }
-
-function validatePasswords() {
-    const password = document.getElementById("password").value;
-    const confirmPassword = document.getElementById("confirmPassword").value;
-    if (password !== confirmPassword) {
-        alert("Passwords do not match!");
-        return false;
-    }
-    return true;
-}
-
-function addUser () {
-    // Show the modal
-    document.getElementById("userModal").style.display = "block";
-}
-
-function closeModal() {
-    // Hide the modal
-    document.getElementById("userModal").style.display = "none";
-}
-
-window.onclick = function(event) {
-    const modal = document.getElementById("userModal");
-    if (event.target === modal) {
-        closeModal();
-    }
-}
-
 async function submitUserForm(event) {
     event.preventDefault(); // Prevent the default form submission
 
@@ -540,7 +537,7 @@ async function submitUserForm(event) {
         address: document.getElementById("address").value,
         role: document.getElementById("role").value
     };
-
+    console.log(user);
     try {
         const response = await fetch(`${API_BASE_URL}/users`, {
             method: 'POST',
@@ -562,14 +559,12 @@ async function submitUserForm(event) {
         alert("An error occurred while registering the user.");
     }
 }
-
 function fetchUserById(id) {
     // Replace this with your actual API call or data retrieval logic.
     const users = fetchUsers();
 
     return users.find(user => user.id === id);
 }
-
 function openEditUserModal(userId) {
     document.getElementById("editUserModal").style.display = "block";
     // Fetch user data and populate the edit form
@@ -582,11 +577,9 @@ function openEditUserModal(userId) {
     document.getElementById("editAddress").value = user.address;
     document.getElementById("editRole").value = user.role;
 }
-
 function closeEditUserModal() {
     document.getElementById("editUserModal").style.display = "none"; // Hide the edit modal
 }
-
 async function submitEditUser (event) {
     event.preventDefault(); // Prevent the default form submission
 
@@ -622,7 +615,12 @@ async function submitEditUser (event) {
         alert("An error occurred while updating the user.");
     }
 }
-
+window.onclick = function(event) {
+    const modal = document.getElementById("userModal");
+    if (event.target === modal) {
+        closeModal();
+    }
+}
 // ===========================
 // Initialization
 // ===========================

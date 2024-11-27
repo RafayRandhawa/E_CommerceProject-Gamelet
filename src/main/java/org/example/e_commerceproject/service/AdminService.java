@@ -1,4 +1,5 @@
 package org.example.e_commerceproject.service;
+import jakarta.transaction.Transactional;
 import org.example.e_commerceproject.model.Category;
 import org.example.e_commerceproject.model.Order;
 import org.example.e_commerceproject.model.Payment;
@@ -14,6 +15,7 @@ import org.example.e_commerceproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -68,7 +70,16 @@ public class AdminService {
         return productRepository.findById(id).orElse(null);
     }
 
+    @Transactional
     public Product saveProduct(Product product) {
+
+        if (product.getCategory() != null && product.getCategory().getCategoryId() != null) {
+            Category category = categoryRepository.findById(product.getCategory().getCategoryId())
+                    .orElseThrow(() -> new IllegalArgumentException("Category not found"));
+            product.setCategory(category);
+            product.setCreatedAt(LocalDateTime.now());
+        }
+
         return productRepository.save(product);
     }
 

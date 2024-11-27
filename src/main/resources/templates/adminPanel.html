@@ -145,14 +145,14 @@
             <div id="addProductModal" class="modal" style="display: none">
                 <div class="modal-content">
                     <span class="close" onclick="closeProductModal()">&times;</span>
-                    <h2>Edit User</h2>
+                    <h2>Add Product</h2>
                     <form id="addProductForm" onsubmit=" addProduct(event)">
                         <input type="hidden" id="addProductId" name="id">
                         <label for="addProductName">Product Name:</label>
                         <input type="text" id="addProductName" name="name" placeholder="Enter Product Name" required><br><br>
 
                         <label for="addPrice">Price:</label>
-                        <input type="number" id="addPrice" name="price" placeholder="Enter Price" required><br><br>
+                        <input type="number" step="0.01" id="addPrice" name="price" placeholder="Enter Price" required><br><br>
 
                         <label for="addStockQuantity">Stock Quantity:</label>
                         <input type="number" id="addStockQuantity" name="stockQuantity" placeholder="Enter Stock Quantity" required><br><br>

@@ -34,7 +34,8 @@ public class AdminController {
     }
 
     @PostMapping("/users")
-    public ModelAndView createUser (@ModelAttribute User user) {
+    public ModelAndView createUser (@RequestBody User user) {
+        System.out.println(user.getAddress());
         user.setCreated_at(LocalDateTime.now());
         adminService.saveUser(user);
         ModelAndView mav = new ModelAndView("adminPanel"); // "my-page" is the name of the HTML file in templates
@@ -73,7 +74,7 @@ public class AdminController {
     }
 
     @PostMapping("/products")
-    public Product createProduct(@ModelAttribute Product product) {
+    public Product createProduct(@RequestBody Product product) {
         return adminService.saveProduct(product);
     }
     @PostMapping("/products/insertAll")
@@ -163,7 +164,9 @@ public class AdminController {
         categories.forEach(adminService::saveCategory);
     }
     @PostMapping("/categories")
-    public void createCategories(@ModelAttribute Category category) {
+    public void createCategories(@RequestBody Category category)
+    {
+        System.out.println(category.toString());
         adminService.saveCategory(category);
     }
 
