@@ -76,6 +76,14 @@ public class AdminController {
     public Product createProduct(@ModelAttribute Product product) {
         return adminService.saveProduct(product);
     }
+    @PostMapping("/products/insertAll")
+    public List<Product> createListProducts(@RequestBody List<Product> products) {
+        // Save each product and collect the saved products into a list
+        return products.stream()
+                .map(adminService::saveProduct)
+                .toList(); // Using `toList()` from Java 16 onwards
+    }
+
 
     @PutMapping("/products/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
@@ -150,7 +158,7 @@ public class AdminController {
         return category != null ? ResponseEntity.ok(category) : ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/categories/List")
+    @PostMapping("/categories/insertAll")
     public void createCategoriesList(@RequestBody List<Category> categories) {
         categories.forEach(adminService::saveCategory);
     }
