@@ -1,10 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming Store</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/script.js" defer></script>
 </head>
 <body>
-<h1>This will be Home Page</h1>
+<header class="header">
+    <div class="navbar">
+        <div class="logo">
+            <img src="/images/logo.jfif" alt="Gaming Store Logo">
+        </div>
+        <nav class="nav-links">
+            <ul>
+                <li><a href="#">PC</a></li>
+                <li><a href="#">Console</a></li>
+                <li><a href="#">Mobile</a></li>
+                <li><a href="#">Lifestyle</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+
+<main>
+    <div class="hero-section">
+        <h1>Loot Like a Legend</h1>
+        <p>Cyber Weekend Specials</p>
+        <button onclick="shopNow()">Shop Now</button>
+    </div>
+
+    <div class="products-section">
+        <div class="product">
+            <img src="/images/keyboard.png" alt="Keyboard">
+            <h3>RGB Keyboard</h3>
+        </div>
+        <div class="product">
+            <img src="/images/laptop.png" alt="Laptop">
+            <h3>Gaming Laptop</h3>
+        </div>
+        <div class="product">
+            <img src="/images/mouse.png" alt="Mouse">
+            <h3>Gaming Mouse</h3>
+        </div>
+        <div class="product">
+            <img src="/images/headset.png" alt="Headset">
+            <h3>Gaming Headset</h3>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2024 Gaming Store</p>
+</footer>
 </body>
 </html>
