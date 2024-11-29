@@ -57,10 +57,15 @@ button:hover {
 }
 
 .sidebar {
-    width: 200px;
+    position: fixed; /* Make the sidebar fixed on the page */
+    top: 0; /* Align to the top of the page */
+    left: 0; /* Align to the left of the page */
+    width: 200px; /* Sidebar width */
+    height: 100vh; /* Full height of the viewport */
     background-color: #333;
     color: #fff;
     padding: 20px;
+    box-sizing: border-box; /* Include padding in width/height */
 }
 
 .sidebar h2 {
@@ -86,9 +91,13 @@ button:hover {
     font-weight: bold;
 }
 
+
 .main-content {
     flex: 1;
-    padding: 20px;
+    margin-left: 220px; /* Add a left margin equal to sidebar width + padding */
+    padding: 20px; /* Add some padding for content spacing */
+    box-sizing: border-box;
+
 }
 
 header {
