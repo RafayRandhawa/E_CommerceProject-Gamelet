@@ -1,6 +1,10 @@
 package org.example.e_commerceproject.controllers;
+import jakarta.servlet.http.HttpSession;
 import org.example.e_commerceproject.model.User;
+import org.example.e_commerceproject.repository.UserRepository;
+import org.example.e_commerceproject.service.AdminService;
 import org.example.e_commerceproject.service.LoginService;
+import org.example.e_commerceproject.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +14,9 @@ import java.time.LocalDateTime;
 public class LoginController {
     @Autowired
     private LoginService loginService;
+    @Autowired
+    private SessionService sessionService;
+
 
     @GetMapping("/login")
     public String login(Model model) {
@@ -19,21 +26,23 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String loginAuth(@ModelAttribute("user") User user, Model model) {
+    public String loginAuth(@ModelAttribute("user") User user, Model model, HttpSession httpSession) {
         String validationStatus = loginService.validateUser(user.getEmail(), user.getPassword());
 
-        return switch (validationStatus) {
-            case "USER" -> "redirect:/home/";
-            case "ADMIN" -> "redirect:/admin/panel";
-            case "INVALID_USER", "INVALID_PASSWORD" -> {
-                model.addAttribute("error", "Invalid Email or Password");
-                yield "login";
-            }
-            default -> {
-                model.addAttribute("error", "Unexpected error occurred");
-                yield "login";
-            }
-        };
+        if ("USER".equals(validationStatus)) {
+            sessionService.setAttribute("user",loginService.findByEmail(user.getEmail()).get());
+            return "redirect:/home/";
+        } else if ("ADMIN".equals(validationStatus)) {
+            sessionService.setAttribute("user",loginService.findByEmail(user.getEmail()).get());
+            return "redirect:/admin/panel";
+        } else if ("INVALID_USER".equals(validationStatus) || "INVALID_PASSWORD".equals(validationStatus)) {
+            model.addAttribute("error", "Invalid Email or Password");
+            return "login";
+        } else {
+            model.addAttribute("error", "Unexpected error occurred");
+            return "login";
+        }
+
     }
     @GetMapping("/register")
     public String register(Model model) {

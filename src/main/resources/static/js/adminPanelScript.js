@@ -143,6 +143,30 @@ async function fetchAllData() {
     await fetchPayments();
     await fetchCategories();
 }
+async function fetchSessionUser() {
+    try {
+        const response = await fetch('/api/session/data');
+        if (!response.ok) {
+            throw new Error('Failed to fetch session data');
+        }
+
+        const sessionData = await response.json();
+        console.log('Session Data:', sessionData);
+
+        // Access user data from the response
+        const user = sessionData.user;
+        console.log('User:', user);
+
+        // Use the user object as needed
+        document.getElementById('user-name').textContent = `Welcome, ${user.firstname} ${user.lastname}`;
+    } catch (error) {
+        console.error('Error fetching session data:', error);
+    }
+}
+
+// Call the function to load session data
+fetchSessionUser();
+
 // ===========================
 // DOM Manipulation Functions
 // ===========================

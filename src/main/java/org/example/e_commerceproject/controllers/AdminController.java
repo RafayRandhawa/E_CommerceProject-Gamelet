@@ -193,4 +193,5 @@ public class AdminController {
 
         return adminService.getAllShippings();
     }
+
 }
