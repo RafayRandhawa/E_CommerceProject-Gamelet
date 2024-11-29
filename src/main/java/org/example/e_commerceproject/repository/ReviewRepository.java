@@ -1,7 +1,10 @@
 package org.example.e_commerceproject.repository;
 
+import jakarta.transaction.Transactional;
 import org.example.e_commerceproject.model.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -36,4 +39,9 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     // Find a Single Review by Product ID and User ID
     //Optional<Review> findByProduct_ProductIdAndUser_Id(Long productId, Long userId);
+    // Custom query to update the isApproved column for a review by its ID
+    @Modifying
+    @Transactional
+    @Query("UPDATE Review r SET r.isApproved = :isApproved WHERE r.id = :reviewId")
+    int updateIsApprovedById(Long reviewId, boolean isApproved);
 }

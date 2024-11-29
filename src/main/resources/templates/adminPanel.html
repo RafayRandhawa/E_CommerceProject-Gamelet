@@ -19,6 +19,7 @@
                 <li><a href="#orders">Manage Orders</a></li>
                 <li><a href="#reviews">View Reviews</a></li>
                 <li><a href="#payments">View Payments</a></li>
+                <li><a href="#shippings">View Suppliers</a></li>
                 <li><a href="#categories">Manage Categories</a></li>
             </ul>
         </nav>
@@ -218,25 +219,58 @@
                 <thead>
                 <tr>
                     <th>Order ID</th>
-                    <th>User</th>
-                    <th>Total</th>
+                    <th>Order Date</th>
                     <th>Status</th>
+                    <th>User ID</th>
+                    <th>Shipping ID</th>
+                    <th>Payment ID</th>
+                    <th>Order Creation Time</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody id="orders-table-body">
                 <!-- Dynamic Order Rows will be inserted here -->
                 </tbody>
             </table>
+
+            <!-- Popup for Product Details -->
+            <div id="products-popup" class="popup hidden">
+                <div class="popup-content">
+                    <h3>Products in Order</h3>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Product ID</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Price</th>
+                            <th>Stock Quantity</th>
+                            <th>Category</th>
+                            <th>Created At</th>
+                            <th>Updated At</th>
+                        </tr>
+                        </thead>
+                        <tbody id="order-products-table-body">
+                        <!-- Dynamic Product Rows will be inserted here -->
+                        </tbody>
+                    </table>
+                    <button onclick="closeProductsPopup()">Close</button>
+                </div>
+            </div>
         </section>
         <section id="reviews" class="content-section hidden">
             <h2>View Reviews</h2>
             <table>
                 <thead>
                 <tr>
-                    <th>Product</th>
-                    <th>User</th>
+                    <th>ID</th>
+                    <th>Product ID</th>
+                    <th>User ID</th>
                     <th>Rating</th>
-                    <th>Comment</th>
+                    <th>Review</th>
+                    <th>Review Date</th>
+                    <th>Approval Status</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody id="reviews-table-body">
@@ -257,6 +291,26 @@
                 </thead>
                 <tbody id="payments-table-body">
                 <!-- Dynamic Payment Rows will be inserted here -->
+                </tbody>
+            </table>
+        </section>
+        <section id="shippings" class="content-section hidden">
+            <h2>View Shipping</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Address</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Country</th>
+                    <th>Postal Code</th>
+                    <th>Shipping Date</th>
+
+                </tr>
+                </thead>
+                <tbody id="shipping-table-body">
+                <!-- Dynamic Shipping Rows will be inserted here -->
                 </tbody>
             </table>
         </section>

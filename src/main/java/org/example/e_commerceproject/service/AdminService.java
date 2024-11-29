@@ -1,17 +1,8 @@
 package org.example.e_commerceproject.service;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.example.e_commerceproject.model.Category;
-import org.example.e_commerceproject.model.Order;
-import org.example.e_commerceproject.model.Payment;
-import org.example.e_commerceproject.model.Product;
-import org.example.e_commerceproject.model.Review;
-import org.example.e_commerceproject.model.User;
-import org.example.e_commerceproject.repository.CategoryRepository;
-import org.example.e_commerceproject.repository.OrderRepository;
-import org.example.e_commerceproject.repository.PaymentRepository;
-import org.example.e_commerceproject.repository.ProductRepository;
-import org.example.e_commerceproject.repository.ReviewRepository;
-import org.example.e_commerceproject.repository.UserRepository;
+import org.example.e_commerceproject.model.*;
+import org.example.e_commerceproject.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +29,8 @@ public class AdminService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private ShippingRepository shippingRepository;
 
     // User management
     public List<User> getAllUsers() {
@@ -105,7 +98,24 @@ public class AdminService {
         order.setOrderId(id); // Ensure the ID is set for the update
         orderRepository.save(order);
     }
+    @Transactional
+    public void cancelOrder(Long orderId) {
+        // Retrieve the order by ID
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new EntityNotFoundException("Order with ID " + orderId + " not found"));
 
+        // Validate the current status of the order
+        if ("Cancelled".equalsIgnoreCase(order.getStatus())) {
+            throw new IllegalStateException("Order is already cancelled.");
+        }
+
+        // Update the order status and timestamp
+        order.setStatus("Cancelled");
+        order.setUpdatedAt(LocalDateTime.now());
+
+        // Save the updated order to the database
+        orderRepository.save(order);
+    }
     public void deleteOrder(Long id) {
         orderRepository.deleteById(id);
     }
@@ -118,6 +128,7 @@ public class AdminService {
     public void deleteReview(Long id) {
         reviewRepository.deleteById(id);
     }
+    public void updateReview(Long id){reviewRepository.updateIsApprovedById(id,true);}
 
     // Payment management
     public List<Payment> getAllPayments() {
@@ -148,5 +159,8 @@ public class AdminService {
 
     public void deleteCategory(Long id) {
         categoryRepository.deleteById(id);
+    }
+    public List<Shipping> getAllShippings(){
+        return shippingRepository.findAll();
     }
 }

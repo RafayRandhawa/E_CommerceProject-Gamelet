@@ -45,6 +45,19 @@ async function fetchUsers() {
         console.error('Error fetching users:', error);
     }
 }
+async function fetchShippings() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/shippings`);
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        const shippings = await response.json();
+        console.log('Shippings:', shippings); // Handle the shipping data as needed
+        return shippings;
+    } catch (error) {
+        console.error('Error fetching shippings:', error);
+    }
+}
 
 // Function to fetch all orders from the API
 async function fetchOrders() {
@@ -157,6 +170,8 @@ async function populateDashboard() {
     const products = await fetchProducts();
     const orders = await fetchOrders();
     const categories = await fetchCategories();
+    const reviews = await fetchReviews();
+    const shipping = await fetchShippings();
     document.getElementById('total-users').innerText = users.length;
     document.getElementById('total-products').innerText = products.length;
     document.getElementById('total-orders').innerText = orders.length;
@@ -165,6 +180,8 @@ async function populateDashboard() {
     populateProductsTable(products);
     populateOrdersTable(orders);
     populateCategoriesTable(categories);
+    populateShippingTable(shipping);
+    populateReviewsTable(reviews);
 }
 
 function populateUsersTable(users) {
@@ -213,8 +230,8 @@ function populateCategoriesTable(categories){
                
                 <td>${category.description}</td>
                 <td>
-                    <button onclick="editCategoryModal(${category.id})">Edit</button>
-                    <button onclick="deleteCategory(${category.id})">Delete</button>
+                    <button onclick="editCategoryModal(${category.categoryId})">Edit</button>
+                    <button onclick="deleteCategory(${category.categoryId})">Delete</button>
                 </td>
             </tr>`;
         tbody.innerHTML += row;
@@ -226,14 +243,61 @@ function populateOrdersTable(orders) {
     orders.forEach(order => {
         const row = `<tr>
                 <td>${order.id}</td>
-                <td>${order.user.name}</td>
-                <td>$${order.total.toFixed(2)}</td>
+                <td>${order.orderDate}</td>
                 <td>${order.status}</td>
+                <td>${order.user.id}</td>
+                <td>${order.shipping.shippingId}</td>
+                <td>${order.payment.paymentId}</td>
+                <td>${order.createdAt}</td>
+                <td>
+                    <button onclick="cancelOrder(${order.id})">Canecl Order</button>
+                    <!--<button onclick="viewOrder(${order.id})">View Order</button>-->
+                </td>
             </tr>`;
         tbody.innerHTML += row;
     });
 
 }
+function populateReviewsTable(reviews) {
+    const tbody = document.getElementById('reviews-table-body');
+    tbody.innerHTML = '';
+    reviews.forEach(review => {
+        const row = `<tr>
+                <td>${review.reviewId}</td>
+                <td>${review.product.productId}</td>
+                <td>${review.user.id}</td>
+                <td>${review.rating}</td>
+                <td>${review.reviewText}</td>
+                <td>${review.reviewDate}</td>
+                <td>${review.isApproved}</td>
+              
+                <td>
+                    <button onclick="approve(${review.reviewId})">Approve</button>
+                    <button onclick="rejectReview(${review.reviewId})">Delete</button>
+                </td>
+            </tr>`;
+        tbody.innerHTML += row;
+    });
+
+}
+function populateShippingTable(shippings) {
+    const tbody = document.getElementById('shipping-table-body');
+    tbody.innerHTML = '';
+    shippings.forEach(shipping => {
+        const row = `<tr>
+                <td>${shipping.shippingId}</td>
+                <td>${shipping.address}</td>
+                <td>${shipping.city}</td>
+                <td>${shipping.state}</td>
+                <td>${shipping.country}</td>
+                <td>${shipping.postalCode}</td>
+                <td>${shipping.shippingDate}</td>
+                
+            </tr>`;
+        tbody.innerHTML += row;
+    });
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     const categorySelect = document.getElementById('addCategory');
 
@@ -260,7 +324,51 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error("Error populating categories:", error);
     }
 })
+// ===========================
+// Review Management Functions
+// ===========================
+async function approve(review_id) {
 
+    const apiUrl = `${API_BASE_URL}/reviews/${review_id}`;
+
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({review_id}),
+        });
+
+        if (response.ok) {
+            alert('Review updated successfully');
+        } else {
+            const errorMessage = await response.text();
+            console.error('Error updating review:', errorMessage);
+            alert('Failed to update review. Please try again.');
+        }
+    } catch (error) {
+        console.error('Network or server error:', error);
+        alert('An error occurred while updating the review.');
+    }
+}
+async function rejectReview(review_id) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/reviews/${review_id}`, {
+            method: 'DELETE',
+            headers: 'Content-type:application/json',
+            body: JSON.stringify(review_id)
+        });
+        if (response.ok) {
+            alert("Review deleted successfully!");
+        } else {
+            alert("Failed to delete Review. Please try again.");
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert("An error occurred while deleting the Review.");
+    }
+}
 // ===========================
 // Product Management Functions
 // ===========================
@@ -363,7 +471,6 @@ async function deleteProduct(product_id){
 
         if (response.ok) {
             alert("Product deleted successfully!");
-            closeEditProductModal(); // Close the modal
             await populateDashboard();
         } else {
             alert("Failed to delete Product. Please try again.");
@@ -414,11 +521,11 @@ async function addCategory(event){
 function closeEditCategoryModal(){
     document.getElementById('editCategoryModal').style.display='none';
 }
-function editCategoryModal(category_id){
+async function editCategoryModal(category_id){
     document.getElementById('editCategoryModal').style.display = 'block';
 
-    const category = fetchCategoryById(category_id);
-    document.getElementById('editProductId').value = category_id;
+    const category = await fetchCategoryById(category_id);
+    document.getElementById('editCategoryId').value = category_id;
     document.getElementById('editCategoryName').value = category.name;
     document.getElementById('editCategoryDescription').value = category.description;
 
@@ -428,15 +535,15 @@ async function editCategory(event){
     event.preventDefault();
     const category_id = document.getElementById('editCategoryId').value;
     const category = {
-        id: category_id,
-        name:document.getElementById('editCategoryName'),
-        description:document.getElementById('editCategoryDescription')
+        categoryId: category_id,
+        name:document.getElementById('editCategoryName').value,
+        description:document.getElementById('editCategoryDescription').value
     };
     try{
         const response = await fetch(`${API_BASE_URL}/categories/${category_id}`,{
             method : 'PUT',
             headers:{'Content-Type': 'application/json'},
-            JSON: JSON.stringify(category)
+            body: JSON.stringify(category)
 
         });
         if (response.ok){
@@ -464,7 +571,6 @@ async function deleteCategory(category_id){
 
         if (response.ok) {
             alert("Category deleted successfully!");
-            closeEditCategoryModal(); // Close the modal
 
         } else {
             alert("Failed to delete Category. Please try again.");
@@ -622,6 +728,77 @@ window.onclick = function(event) {
     }
 }
 // ===========================
+// Order Management Functions
+// ===========================
+
+async function cancelOrder(order_id) {
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/orders/${order_id}/cancel`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            alert(`Order ${order_id} has been successfully cancelled.`);
+            // Optionally, refresh the order list or update the UI here
+        } else if (response.status === 404) {
+            alert(`Order ${order_id} not found.`);
+        } else {
+            alert('Failed to cancel the order. Please try again later.');
+        }
+    } catch (error) {
+        console.error('Error cancelling the order:', error);
+        alert('An error occurred while cancelling the order. Please check the console for details.');
+    }
+}
+// async function viewOrder(orderId){
+//     const popup = document.getElementById('products-popup');
+//     const productsTableBody = document.getElementById('products-table-body');
+//
+//     // Clear existing product rows
+//     productsTableBody.innerHTML = '';
+//
+//     // Fetch products associated with the order
+//     fetch(`${API_BASE_URL}/orders/${orderId}/products`)
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Failed to fetch products');
+//             }
+//             return response.json();
+//         })
+//         .then(products => {
+//             products.forEach(product => {
+//                 const row = document.createElement('tr');
+//                 row.innerHTML = `
+//                     <td>${product.productId}</td>
+//                     <td>${product.name}</td>
+//                     <td>${product.description || 'No description'}</td>
+//                     <td>${product.price}</td>
+//                     <td>${product.stockQuantity}</td>
+//                     <td>${product.category.name}</td>
+//                     <td>${product.createdAt}</td>
+//                     <td>${product.updatedAt}</td>
+//                 `;
+//                 productsTableBody.appendChild(row);
+//             });
+//         })
+//         .catch(error => {
+//             console.error('Error fetching products:', error);
+//             alert('Failed to load products');
+//         });
+//
+//     // Show the popup
+//     popup.classList.remove('hidden');
+// }
+
+function closeProductsPopup() {
+    const popup = document.getElementById('products-popup');
+    popup.classList.add('hidden');
+}
+// ===========================
 // Initialization
 // ===========================
 
@@ -630,7 +807,7 @@ window.onload = function() {
     populateDashboard(); // Call the function to populate the dashboard on page load
 };
 function logout(){
-    window.location.href="../../templates/login.html";
+    window.location.href="/login";
 }
 // Call the function to fetch all data
 fetchAllData();

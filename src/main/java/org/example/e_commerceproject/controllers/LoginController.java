@@ -23,8 +23,8 @@ public class LoginController {
         String validationStatus = loginService.validateUser(user.getEmail(), user.getPassword());
 
         return switch (validationStatus) {
-            case "USER" -> "home";
-            case "ADMIN" -> "adminPanel";
+            case "USER" -> "redirect:/home/";
+            case "ADMIN" -> "redirect:/admin/panel";
             case "INVALID_USER", "INVALID_PASSWORD" -> {
                 model.addAttribute("error", "Invalid Email or Password");
                 yield "login";

@@ -1,11 +1,6 @@
 package org.example.e_commerceproject.controllers;
 
-import org.example.e_commerceproject.model.Category;
-import org.example.e_commerceproject.model.Order;
-import org.example.e_commerceproject.model.Payment;
-import org.example.e_commerceproject.model.Product;
-import org.example.e_commerceproject.model.Review;
-import org.example.e_commerceproject.model.User;
+import org.example.e_commerceproject.model.*;
 import org.example.e_commerceproject.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -116,6 +111,12 @@ public class AdminController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/orders/{id}/cancel")
+    public void cancelOrder(@PathVariable Long id, @RequestBody Order order) {
+        adminService.cancelOrder(id);
+
+    }
+
     @DeleteMapping("/orders/{id}")
     public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
         adminService.deleteOrder(id);
@@ -131,6 +132,11 @@ public class AdminController {
     @DeleteMapping("/reviews/{id}")
     public ResponseEntity<Void> deleteReview(@PathVariable Long id) {
         adminService.deleteReview(id);
+        return ResponseEntity.noContent().build();
+    }
+    @PutMapping("/reviews/{id}")
+    public ResponseEntity<Void> updateReview(@PathVariable Long id){
+        adminService.updateReview(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -149,7 +155,7 @@ public class AdminController {
     // Category management endpoints
     @GetMapping("/categories")
     public List<Category> getAllCategories() {
-        System.out.println(adminService.getAllCategories());
+
         return adminService.getAllCategories();
     }
 
@@ -166,7 +172,7 @@ public class AdminController {
     @PostMapping("/categories")
     public void createCategories(@RequestBody Category category)
     {
-        System.out.println(category.toString());
+
         adminService.saveCategory(category);
     }
 
@@ -180,5 +186,11 @@ public class AdminController {
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         adminService.deleteCategory(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/shipping")
+    public List<Shipping> getAllShippings() {
+
+        return adminService.getAllShippings();
     }
 }

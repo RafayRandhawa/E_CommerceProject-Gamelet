@@ -181,3 +181,40 @@ th {
     text-decoration: none;
     cursor: pointer;
 }
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    max-width: 800px;
+    display: none;
+    padding: 20px;
+}
+
+.popup-content {
+    overflow: auto;
+}
+
+.popup.hidden {
+    display: none;
+}
+
+.popup table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.popup table th, .popup table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+.popup table th {
+    background-color: #f4f4f4;
+}
