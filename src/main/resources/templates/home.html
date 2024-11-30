@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gaming Store</title>
     <link rel="stylesheet" href="/css/home.css">
-    <script src="/js/script.js" defer></script>
+
+    <script src="/js/navbarScript.js" defer></script>
 </head>
 <body>
 <header class="header">
@@ -13,13 +14,27 @@
         <div class="logo">
             <img src="/images/logo.jfif" alt="Gaming Store Logo">
         </div>
-        <nav class="nav-links">
-            <ul>
-                <li><a href="#">PC</a></li>
-                <li><a href="#">Console</a></li>
-                <li><a href="#">Mobile</a></li>
-                <li><a href="#">Lifestyle</a></li>
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><a href="home.html">Home</a></li>
+                <li class="dropdown">
+                    <a href="#">Categories</a>
+                    <ul id="categories-menu" class="dropdown-menu">
+                        <li><a href="#">Product A</a></li>
+                        <li><a href="#">Product B</a></li>
+                        <!-- JavaScript will populate this -->
+                    </ul>
+                </li>
+                <li><a href="#">Contact</a></li>
             </ul>
+            <div class="user-section">
+        <span id="user-icon" style ="display: none;">
+            <a href="/profile">
+                <img src="/static/images/user-icon.png" alt="User" class="user-icon">
+            </a>
+        </span>
+                <button id="sign-in-btn" class="sign-in-btn" style="display: none;">Sign In</button>
+            </div>
         </nav>
     </div>
 </header>
@@ -27,10 +42,16 @@
 
 <main>
     <div class="hero-section">
-        <h1>Loot Like a Legend</h1>
-        <p>Cyber Weekend Specials</p>
-        <button onclick="shopNow()">Shop Now</button>
+        <div class="hero-text">
+            <h1>Loot Like a Legend</h1>
+            <p>Cyber Weekend Specials</p>
+            <a href="#" class="cta-button">Shop Now ></a>
+        </div>
+        <div class="hero-background">
+            <img src="/images/background.jpg" alt="Hero Background">
+        </div>
     </div>
+
 
     <div class="products-section">
         <div class="product">

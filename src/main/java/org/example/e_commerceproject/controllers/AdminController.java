@@ -188,9 +188,8 @@ public class AdminController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/shipping")
+    @GetMapping("/shippings")
     public List<Shipping> getAllShippings() {
-
         return adminService.getAllShippings();
     }
 

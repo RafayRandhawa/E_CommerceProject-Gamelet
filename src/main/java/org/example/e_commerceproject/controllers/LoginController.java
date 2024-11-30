@@ -1,8 +1,5 @@
 package org.example.e_commerceproject.controllers;
-import jakarta.servlet.http.HttpSession;
 import org.example.e_commerceproject.model.User;
-import org.example.e_commerceproject.repository.UserRepository;
-import org.example.e_commerceproject.service.AdminService;
 import org.example.e_commerceproject.service.LoginService;
 import org.example.e_commerceproject.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +23,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String loginAuth(@ModelAttribute("user") User user, Model model, HttpSession httpSession) {
+    public String loginAuth(@ModelAttribute("user") User user, Model model) {
         String validationStatus = loginService.validateUser(user.getEmail(), user.getPassword());
 
         if ("USER".equals(validationStatus)) {

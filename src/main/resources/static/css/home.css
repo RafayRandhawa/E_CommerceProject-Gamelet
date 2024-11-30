@@ -1,20 +1,56 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #000;
-    color: #fff;
+    color: white;
+}
+
+.hero-background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the background without distortion */
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1; /* Sends the image behind the text */
+}
+
+.hero-text {
+    position: relative;
+    top: 30%; /* Adjust to control vertical placement */
+    transform: translateY(-30%);
+    z-index: 1;
+}
+
+.hero-text h1 {
+    font-size: 3rem; /* Adjust font size */
+    margin: 0 0 10px;
+}
+
+.hero-text p {
+    font-size: 1.5rem; /* Adjust font size for subtext */
+    margin: 0 0 20px;
+}
+
+.cta-button {
+    background-color: #00ff00; /* Green button */
+    color: black;
+    text-decoration: none;
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #00cc00; /* Darker green on hover */
 }
 
 .header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    height: 100px;
-    background: #111;
+    margin-bottom: 20px;
 }
 
-.nav-links ul {
+.nav-links > ul {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -22,16 +58,55 @@ body {
     gap: 20px; /* Add spacing between links */
 }
 
+.nav-links .dropdown-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links .dropdown-menu li {
+    display: block;
+}
+
+
 .nav-links ul li a {
     text-decoration: none;
     color: white; /* Adjust color as needed */
     font-size: 16px;
 }
 
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    padding: 10px 20px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: white;
+    font-size: 1rem;
+    padding: 10px;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: limegreen;
+}
+
 .hero-section {
-    text-align: center;
-    padding: 100px 20px;
-    background: url('../images/background.jpg') no-repeat center center/cover;
+    position: relative;
+    text-align: center; /* Centers all text and elements */
+    color: white;
+    overflow: hidden;
+    height: 600px; /* Adjust as needed */
 }
 
 #logout.hover{
@@ -87,9 +162,70 @@ body {
     height: auto; /* Maintain aspect ratio */
 }
 
+.user-section {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.user-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.sign-in-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.sign-in-btn:hover {
+    background-color: #45a049;
+}
+
 footer {
     text-align: center;
     padding: 20px;
     background: #111;
     position: relative;
+}
+/* Dropdown Styling */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%; /* Aligns below parent */
+    left: 0;
+    background-color: black;
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+    border: 1px solid #333;
+    z-index: 10;
+}
+
+.dropdown-menu li {
+    padding: 10px 20px;
+}
+
+.dropdown-menu li a {
+    color: white;
+    text-decoration: none;
+}
+
+.dropdown-menu li a:hover {
+    color: limegreen;
+}
+
+/* Show dropdown menu on hover */
+.dropdown:hover .dropdown-menu {
+    display: block;
 }
