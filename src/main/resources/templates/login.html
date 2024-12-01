@@ -5,8 +5,8 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0; /* Light gray background */
-            color: #333; /* Dark text color */
+            background-color: #151515; /* Dark background */
+            color: #1de024; /* Green text color */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -15,65 +15,103 @@
         }
 
         h2 {
-            color: #c0392b; /* Red color for the heading */
+            color: #1de024; /* Green color for the heading */
+            text-align: center;
+            margin-bottom: 20px;
         }
 
         .login-container {
-            background-color: #fff; /* White background for the form */
-            border: 1px solid #c0392b; /* Red border */
+            background-color: #0f0f0f; /* Dark background for the form */
+            border: 1px solid #1de024; /* Green border */
             border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            width: 300px; /* Fixed width for the form */
+            padding: 30px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+            width: 320px; /* Slightly wider form */
         }
 
         label {
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
+            font-size: 14px;
+            color: #e0e0e0; /* Lighter color for labels */
         }
 
         input[type="email"],
         input[type="password"] {
-            width: 100%; /* Full width */
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #c0392b; /* Red border */
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #1de024; /* Green border */
             border-radius: 4px;
+            background-color: #0f0f0f;
+            color: #00cc00;
+            font-size: 14px;
             box-sizing: border-box; /* Include padding and border in element's total width and height */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for focus effect */
+        }
+
+        /* Focus state for input fields */
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: #00cc00; /* Green border */
+            box-shadow: 0 0 10px rgba(0, 204, 0, 0.5); /* Green glow */
+            outline: none; /* Remove default focus outline */
         }
 
         button {
-            background-color: #c0392b; /* Red button */
-            color: white; /* White text */
+            background-color: #1de024; /* Green button */
+            color: #151515; /* Dark text color */
             border: none;
-            padding: 10px;
+            padding: 12px;
             border-radius: 4px;
             cursor: pointer;
-            width: 100%; /* Full width */
+            width: 100%;
             font-size: 16px;
+            transition: background-color 0.3s ease;
         }
 
+        /* Hover state for buttons */
         button:hover {
-            background-color: #a93226; /* Darker red on hover */
+            background-color: #1abe21; /* Slightly darker green on hover */
         }
 
         #error-message {
-            color: red;
-            margin-bottom: 15px;
+            color: #ff4444; /* Red error message */
+            margin-bottom: 20px;
+            font-size: 14px;
+            text-align: center;
         }
 
         a {
-            color: #c0392b; /* Red link */
+            color: #1de024; /* Green link */
             text-decoration: none;
             display: block;
             text-align: center;
-            margin-top: 10px;
+            margin-top: 15px;
+            font-size: 14px;
         }
 
+        /* Hover state for links */
         a:hover {
-            text-decoration: underline; /* Underline on hover */
+            text-decoration: underline;
         }
+
+        /* Responsive adjustments */
+        @media (max-width: 400px) {
+            .login-container {
+                width: 90%; /* Ensure the form fits smaller screens */
+            }
+
+            button {
+                font-size: 14px;
+            }
+
+            label, input {
+                font-size: 13px;
+            }
+        }
+
     </style>
 </head>
 <body>
