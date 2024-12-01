@@ -80,7 +80,10 @@ body {
     justify-content: center;
     align-items: center;
     background-color: black;
-    padding: 10px 20px;
+    border-bottom: 5px solid limegreen;
+    margin-bottom: 0;
+    padding-bottom: 0;
+
 }
 
 .nav-links {
@@ -107,6 +110,7 @@ body {
     color: white;
     overflow: hidden;
     height: 600px; /* Adjust as needed */
+    margin-top: 0;
 }
 
 #logout.hover{
@@ -136,6 +140,9 @@ body {
     justify-content: center;
     padding: 50px;
     flex-wrap: wrap;
+    background-color: black;
+
+    border-radius: 5px;
 }
 
 .product {
@@ -144,9 +151,10 @@ body {
 }
 
 .product img {
-    width: 100%;
-    height: auto;
+    width: 150px;
+    height: 150px;
     border-radius: 10px;
+    object-fit: cover;
 }
 
 .navbar {

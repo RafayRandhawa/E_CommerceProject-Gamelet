@@ -1,0 +1,96 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: url('../images/profilebg.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 20%;
+    background: #333;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.sidebar h2 {
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+}
+
+.sidebar ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.sidebar ul li a:hover {
+    text-decoration: underline;
+}
+
+.main-content {
+    width: 80%;
+    padding: 20px;
+}
+
+.field {
+    margin: 20px 0;
+}
+
+.field label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.field span {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.edit-icon {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.edit-field {
+    display: none;
+    margin-top: 10px;
+}
+
+.edit-field input {
+    padding: 5px;
+    margin-right: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+}
+
+table th, table td {
+    padding: 10px;
+    border: 1px solid #444;
+}
+
+table th {
+    background: #555;
+}

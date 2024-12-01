@@ -28,12 +28,15 @@
                 <li><a href="#">Contact</a></li>
             </ul>
             <div class="user-section">
-        <span id="user-icon" style ="display: none;">
-            <a href="/profile">
-                <img src="/static/images/user-icon.png" alt="User" class="user-icon">
-            </a>
-        </span>
-                <button id="sign-in-btn" class="sign-in-btn" style="display: none;">Sign In</button>
+                <!-- Check if the user is logged in -->
+                <div th:if="${isLoggedIn}">
+                    <a href="/profile">
+                        <img src="/images/user-icon.png" alt="User" class="user-icon" />
+                    </a>
+                </div>
+                <div th:if="${!isLoggedIn}">
+                    <button id="sign-in-btn" class="sign-in-btn" onclick="location.href='/login'">Sign In</button>
+                </div>
             </div>
         </nav>
     </div>
@@ -55,20 +58,20 @@
 
     <div class="products-section">
         <div class="product">
-            <img src="/images/keyboard.png" alt="Keyboard">
+            <img src="/images/keyboard.jfif" alt="Keyboard">
             <h3>RGB Keyboard</h3>
         </div>
         <div class="product">
-            <img src="/images/laptop.png" alt="Laptop">
-            <h3>Gaming Laptop</h3>
-        </div>
-        <div class="product">
-            <img src="/images/mouse.png" alt="Mouse">
+            <img src="/images/mouse.jfif" alt="Mouse">
             <h3>Gaming Mouse</h3>
         </div>
         <div class="product">
-            <img src="/images/headset.png" alt="Headset">
-            <h3>Gaming Headset</h3>
+            <img src="/images/controller.jfif" alt="Controller">
+            <h3>Gaming Controller</h3>
+        </div>
+        <div class="product">
+            <img src="/images/rdr2.jfif" alt="rdr2">
+            <h3>Red Dead Redemption 2 PS4</h3>
         </div>
     </div>
 </main>
