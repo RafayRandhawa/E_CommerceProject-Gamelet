@@ -1,33 +1,20 @@
-function showEditField(fieldId) {
-    const field = document.getElementById(`${fieldId}-edit`);
-    field.style.display = field.style.display === "none" ? "block" : "none";
-}
+// Edit Profile Modal Logic
+const editProfileBtn = document.getElementById('edit-profile-btn');
+const profileModal = document.getElementById('profile-modal');
 
-function changeFirstName() {
-    const newFirstName = document.getElementById("first-name-input").value;
-    // Add AJAX call to update the server
-    alert(`First name changed to: ${newFirstName}`);
-}
+editProfileBtn.addEventListener('click', () => {
+    profileModal.style.display = 'flex';
+});
 
-function changeLastName() {
-    const newLastName = document.getElementById("last-name-input").value;
-    // Add AJAX call to update the server
-    alert(`Last name changed to: ${newLastName}`);
-}
+profileModal.addEventListener('click', (event) => {
+    if (event.target === profileModal) {
+        profileModal.style.display = 'none';
+    }
+});
 
-function changePhone() {
-    const newPhone = document.getElementById("phone-input").value;
-    // Add AJAX call to update the server
-    alert(`Phone changed to: ${newPhone}`);
-}
+document.getElementById('edit-profile-form').addEventListener('submit', (e) => {
+    e.preventDefault();
 
-function changeAddress() {
-    const newAddress = document.getElementById("address-input").value;
-    // Add AJAX call to update the server
-    alert(`Address changed to: ${newAddress}`);
-}
-
-function changePassword() {
-    // Add logic to redirect or open password change modal
-    alert("Redirecting to change password...");
-}
+    alert("Profile updated successfully!");
+    profileModal.style.display = 'none';
+});

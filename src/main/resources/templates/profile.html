@@ -1,118 +1,97 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>User Profile</title>
-    <link rel="stylesheet" href="/css/profile.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="stylesheet" th:href="@{/css/profile.css}">
 </head>
 <body>
-<div class="profile-container"><!DOCTYPE html>
-    <html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <title>User Profile</title>
-        <link rel="stylesheet" href="/static/css/profile.css">
-    </head>
-    <body>
-    <div class="container">
-        <!-- Left Panel -->
-        <div class="sidebar">
-            <h2>Dashboard</h2>
-            <ul>
-                <li><a href="#personal-info">Personal Information</a></li>
-                <li><a href="#view-orders">View Orders</a></li>
-            </ul>
-        </div>
-
-        <!-- Main Content -->
-        <div class="main-content">
-            <!-- Personal Information Section -->
-            <section id="personal-info">
-                <h1>Personal Information</h1>
-                <div class="field">
-                    <label>First Name:</label>
-                    <span th:text="${user.firstname}"></span>
-                    <img src="/images/pencil-icon.png" alt="Edit" class="edit-icon" onclick="showEditField('first-name')">
-                    <div id="first-name-edit" class="edit-field">
-                        <input type="text" id="first-name-input" placeholder="Enter new first name">
-                        <button onclick="changeFirstName()">Change</button>
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label>Last Name:</label>
-                    <span th:text="${user.lastname}"></span>
-                    <img src="/images/pencil-icon.png" alt="Edit" class="edit-icon" onclick="showEditField('last-name')">
-                    <div id="last-name-edit" class="edit-field">
-                        <input type="text" id="last-name-input" placeholder="Enter new last name">
-                        <button onclick="changeLastName()">Change</button>
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label>Email:</label>
-                    <span th:text="${user.email}"></span>
-                </div>
-
-                <div class="field">
-                    <label>Phone:</label>
-                    <span th:text="${user.phone}"></span>
-                    <img src="/images/pencil-icon.png" alt="Edit" class="edit-icon" onclick="showEditField('phone')">
-                    <div id="phone-edit" class="edit-field">
-                        <input type="text" id="phone-input" placeholder="Enter new phone number">
-                        <button onclick="changePhone()">Change</button>
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label>Address:</label>
-                    <span th:text="${user.address}"></span>
-                    <img src="/images/pencil-icon.png" alt="Edit" class="edit-icon" onclick="showEditField('address')">
-                    <div id="address-edit" class="edit-field">
-                        <input type="text" id="address-input" placeholder="Enter new address">
-                        <button onclick="changeAddress()">Change</button>
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label>Password:</label>
-                    <button onclick="changePassword()">Change Password</button>
-                </div>
-            </section>
-
-            <!-- View Orders Section -->
-            <section id="view-orders">
-                <h1>View Orders</h1>
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Order ID</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th>Total</th>
-                    </tr>
-                    </thead>
-                    <tbody th:each="order : ${orders}">
-                    <tr>
-                        <td th:text="${order.id}"></td>
-                        <td th:text="${order.date}"></td>
-                        <td th:text="${order.status}"></td>
-                        <td th:text="${order.total}"></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </section>
-        </div>
-    </div>
-    <script src="/static/js/profile.js"></script>
-    </body>
-    </html>
-
-    <h1>Welcome, <span th:text="${user.firstname}"></span> <span th:text="${user.lastname}"></span>!
-    </h1>
-    <p>Email: <span th:text="${user.email}"></span></p>
-    <p>Username: <span th:text="${user.phone}"></span></p>
-    <!-- Add more fields if necessary -->
+<!-- Left Panel -->
+<div class="left-panel">
+    <h2>Menu</h2>
+    <a href="#personal-info" class="active">Personal Information</a>
+    <a href="#view-orders">View Orders</a>
 </div>
+
+<!-- Right Content -->
+<div class="right-content">
+    <!-- Personal Information Section -->
+    <div id="personal-info" class="info-section">
+<!--        <h2>Personal Information</h2>-->
+        <div class="tile">
+            <h3>Personal Information</h3>
+            <label>First Name:</label>
+            <span th:text="${user.firstname}"></span><br>
+
+            <label>Last Name:</label>
+            <span th:text="${user.lastname}"></span><br>
+
+            </div>
+        <div class="tile">
+            <h3>Contact Information</h3>
+            <label>Email:</label>
+            <span th:text="${user.email}"></span><br>
+
+            <label>Phone:</label>
+            <span th:text="${user.phone}"></span><br>
+        </div>
+        <div class="tile">
+            <h3>Address</h3>
+            <label>Address:</label>
+            <span th:text="${user.address}"></span>
+        </div>
+        <button class="edit-profile-button" id="edit-profile-btn">Edit Profile</button>
+    </div>
+
+    <!-- View Orders Section -->
+    <div id="view-orders" class="section">
+        <h2>View Orders</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Dynamic Order Data -->
+            <tr th:each="order : ${orders}">
+                <td th:text="${order.orderId}"></td>
+                <td th:text="${order.orderDate}"></td>
+                <td th:text="${order.status}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal for Editing Profile -->
+<div class="modal" id="profile-modal">
+    <div class="modal-content">
+        <h3>Edit Profile</h3>
+        <form id="edit-profile-form" method="post" th:action="@{/profile/update}" th:object="${user}">
+            <label for="first-name">First Name:</label>
+            <input type="text" id="first-name" name="firstname" th:value="${user.firstname}">
+
+            <label for="last-name">Last Name:</label>
+            <input type="text" id="last-name" name="lastname" th:value="${user.lastname}">
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" th:value="${user.email}">
+
+            <label for="phone">Phone:</label>
+            <input type="text" id="phone" name="phone" th:value="${user.phone}">
+
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" th:value="${user.address}">
+
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+</div>
+
+<script th:src="@{/js/profile.js}"></script>
 </body>
 </html>
