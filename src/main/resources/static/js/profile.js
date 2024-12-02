@@ -13,8 +13,5 @@ profileModal.addEventListener('click', (event) => {
 });
 
 document.getElementById('edit-profile-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    alert("Profile updated successfully!");
     profileModal.style.display = 'none';
 });

@@ -12,10 +12,13 @@ import org.example.e_commerceproject.service.OrderService;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.example.e_commerceproject.service.UserService;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
+@RequestMapping("profile")
 public class ProfileController {
 
     private final SessionService sessionService;
@@ -30,7 +33,7 @@ public class ProfileController {
     }
 
 
-    @GetMapping("/profile")
+    @GetMapping("/view")
     public String profilePage(Model model) {
         User user = (User) sessionService.getAttribute("user");
 
@@ -53,6 +56,10 @@ public class ProfileController {
 
         // Ensure the updated user has the correct ID
         updatedUser.setId(currentUser.getId());
+        updatedUser.setPassword(currentUser.getPassword());
+        updatedUser.setRole(currentUser.getRole());
+        updatedUser.setCreated_at(currentUser.getCreated_at());
+        updatedUser.setUpdated_at(LocalDateTime.now());
 
         try{
             System.out.println("User to update: " + updatedUser);
@@ -69,7 +76,7 @@ public class ProfileController {
             model.addAttribute("errorMessage", "Error updating profile: " + e.getMessage());
         }
 
-        return "redirect:/profile"; // Redirect to profile page
+        return "redirect:/profile/view"; // Redirect to profile page
     }
 
 }
