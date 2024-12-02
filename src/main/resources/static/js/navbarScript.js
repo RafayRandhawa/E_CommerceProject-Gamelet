@@ -10,7 +10,7 @@ async function populateCategoriesDropdown() {
             console.log(category)
             const categoryItem = document.createElement('li');
             categoryItem.innerHTML = `
-                <a href="/products?categoryId=${category.categoryId}">
+                <a href="/home/products?categoryId=${category.categoryId}">
                     ${category.name}
                 </a>`;
             categoriesMenu.appendChild(categoryItem);
