@@ -43,6 +43,8 @@ public class ProfileController {
         List<Order> orders = orderService.getOrdersByUser(user.getId());
         model.addAttribute("orders",orders);
         model.addAttribute("user", user);
+
+        model.addAttribute("isLoggedIn", sessionService.getAttribute("user") != null);
         return "profile"; // Maps to `profile.html`
     }
     @PostMapping("/update")

@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/home.css">
+    <script src="/js/navbarScript.js" defer></script>
+</head>
+<body>
+<header class="header" th:fragment="header">
+    <div class="navbar">
+        <div class="logo">
+            <img src="/images/logo.jfif" alt="Gaming Store Logo">
+        </div>
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><a href="http://localhost:8085/home/">Home</a></li>
+                <li class="dropdown">
+                    <a href="#">Categories</a>
+                    <ul id="categories-menu" class="dropdown-menu">
+                        <li><a href="#">Product A</a></li>
+                        <li><a href="#">Product B</a></li>
+                        <!-- JavaScript will populate this -->
+                    </ul>
+                </li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+            <div class="user-section">
+                <!-- Check if the user is logged in -->
+                <div th:if="${isLoggedIn}">
+                    <a href="/profile/view">
+                        <img src="/images/user-icon.png" alt="User" class="user-icon" />
+                    </a>
+                </div>
+                <div th:if="${!isLoggedIn}">
+                    <button id="sign-in-btn" class="sign-in-btn" onclick="location.href='/login'">Sign In</button>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+</body>
+</html>
