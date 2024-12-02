@@ -830,7 +830,12 @@ window.onload = function() {
     setupSectionSwitching(); // Set up section switching
     populateDashboard(); // Call the function to populate the dashboard on page load
 };
-function logout(){
+async function logout(){
+    try{
+        await fetch(`${API_BASE_URL}/logout`);
+    } catch (error) {
+        console.error('Error:', error);
+    }
     window.location.href="/login";
 }
 // Call the function to fetch all data

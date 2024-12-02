@@ -3,18 +3,18 @@
 <head>
     <title>Products</title>
     <link rel="stylesheet" href="/css/home.css">
+    <script src="/js/Cart_products.js" defer></script>
+    <script src="/js/navbarScript.js" defer></script>
 </head>
 <body>
-<header>
-    <h1>Products in <span th:text="${categoryId}"></span></h1>
-</header>
+<div th:replace="~{header :: header}"></div>
 <div class="products-container">
     <div class="product-card" th:each="product : ${products}">
         <h3 th:text="${product.name}"></h3>
         <p th:text="${product.description}"></p>
         <p th:text="${product.stockQuantity}"></p>
         <p><strong>Price:</strong> $<span th:text="${product.price}"></span></p>
-        <form action="/cart/add" method="post">
+        <form id="add-to-cart" onsubmit="addToCart(event)" >
             <input type="hidden" name="productId" th:value="${product.productId}" />
             <input type="number" name="quantity" min="1" value="1" />
             <button type="submit">Buy</button>

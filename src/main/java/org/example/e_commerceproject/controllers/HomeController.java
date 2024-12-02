@@ -23,21 +23,17 @@ public class HomeController {
 
     @GetMapping("/")
     public String homePage(Model model) {
-        // Check if a user is logged in using SessionService
         Object user = sessionService.getAttribute("user");
-        model.addAttribute("isLoggedIn", user != null); // Pass login status to the view
-        model.addAttribute("user", user); // Pass user object if available
-        return "home"; // Render the `home.html` view
+        model.addAttribute("isLoggedIn", user != null);
+        model.addAttribute("user", user);
+        return "home";
     }
     @GetMapping("/products")
     public String getProductsByCategory(@RequestParam("categoryId") Long categoryId, Model model) {
-        // Fetch the products for the given category
         List<Product> products = productService.getProductsByCategory(categoryId);
-
-        // Add products and categoryId to the model
         model.addAttribute("products", products);
         model.addAttribute("categoryId", categoryId);
-
+        model.addAttribute("isLoggedIn", sessionService.getAttribute("user")!=null);
         return "products";
     }
 }

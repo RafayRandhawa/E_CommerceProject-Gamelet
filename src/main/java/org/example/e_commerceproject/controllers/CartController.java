@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/cart")
 public class CartController {
 
@@ -27,7 +27,7 @@ public class CartController {
      * Display the cart page.
      */
     @GetMapping
-    public String viewCart(Model model, @SessionAttribute("loggedInUser") User user) {
+    public String viewCart(Model model, @SessionAttribute("user") User user) {
         Cart cart = cartService.getActiveCart(user);
         model.addAttribute("cartItems", cart.getCartItems());
         model.addAttribute("totalPrice", cart.getCartItems().stream()
@@ -39,19 +39,18 @@ public class CartController {
      * Add an item to the cart.
      */
     @PostMapping("/add")
-    public String addToCart(@SessionAttribute("loggedInUser") User user,
+    public void addToCart(@SessionAttribute("user") User user,
                             @RequestParam Long productId,
                             @RequestParam int quantity) {
         Product product = productService.getProductById(productId);
         cartService.addToCart(user, product, quantity);
-        return "redirect:/cart";
     }
 
     /**
      * Checkout the cart.
      */
     @PostMapping("/checkout")
-    public String checkout(@SessionAttribute("loggedInUser") User user) {
+    public String checkout(@SessionAttribute("user") User user) {
         Cart cart = cartService.getActiveCart(user);
         cart.setActive(false); // Deactivate the cart
         cartService.save(cart); // Save updated cart

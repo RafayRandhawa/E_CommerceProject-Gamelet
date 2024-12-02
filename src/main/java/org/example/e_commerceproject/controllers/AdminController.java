@@ -1,7 +1,9 @@
 package org.example.e_commerceproject.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import org.example.e_commerceproject.model.*;
 import org.example.e_commerceproject.service.AdminService;
+import org.example.e_commerceproject.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,8 @@ import java.util.List;
 public class AdminController {
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private SessionService sessionService;
 
     // User management endpoints
     @GetMapping("/users")
@@ -191,6 +195,10 @@ public class AdminController {
     @GetMapping("/shippings")
     public List<Shipping> getAllShippings() {
         return adminService.getAllShippings();
+    }
+    @GetMapping("/logout")
+    public void logout(HttpSession session) {
+        session.removeAttribute("user");
     }
 
 }

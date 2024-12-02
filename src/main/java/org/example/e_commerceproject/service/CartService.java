@@ -42,17 +42,26 @@ public class CartService {
     public void addToCart(User user, Product product, int quantity) {
         Cart cart = getOrCreateCart(user);
 
-        // Check if the product is already in the cart
-        Optional<CartItem> existingItem = cart.getCartItems().stream()
-                .filter(item -> item.getProduct().getProductId().equals(product.getProductId()))
-                .findFirst();
+        if(!cart.getCartItems().isEmpty()){
+            Optional<CartItem> existingItem = cart.getCartItems().stream()
+                    .filter(item -> item.getProduct().getProductId().equals(product.getProductId()))
+                    .findFirst();
 
-        if (existingItem.isPresent()) {
-            CartItem cartItem = existingItem.get();
-            cartItem.setQuantity(cartItem.getQuantity() + quantity);
-            cartItem.setTotalPrice(cartItem.getQuantity() * product.getPrice());
-            cartItemRepository.save(cartItem);
-        } else {
+            if (existingItem.isPresent()) {
+                CartItem cartItem = existingItem.get();
+                cartItem.setQuantity(cartItem.getQuantity() + quantity);
+                cartItem.setTotalPrice(cartItem.getQuantity() * product.getPrice());
+                cartItemRepository.save(cartItem);
+            } else {
+                CartItem newItem = new CartItem();
+                newItem.setCart(cart);
+                newItem.setProduct(product);
+                newItem.setQuantity(quantity);
+                newItem.setTotalPrice(product.getPrice() * quantity);
+                cartItemRepository.save(newItem);
+            }
+        }
+        else{
             CartItem newItem = new CartItem();
             newItem.setCart(cart);
             newItem.setProduct(product);
