@@ -4,18 +4,19 @@ import jakarta.servlet.http.HttpSession;
 import org.example.e_commerceproject.model.Order;
 import org.example.e_commerceproject.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import org.example.e_commerceproject.service.SessionService;
 import org.example.e_commerceproject.service.OrderService;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.example.e_commerceproject.service.UserService;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("profile")
@@ -80,6 +81,27 @@ public class ProfileController {
 
         return "redirect:/profile/view"; // Redirect to profile page
     }
+
+    @GetMapping("/order/details/{id}")
+    @ResponseBody
+    public ResponseEntity<Order> getOrderDetails(@PathVariable Long id) {
+        Order order = orderService.getOrderById(id); // Fetch order by ID
+//        if (order == null) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//        }
+//
+//        Map<String, Object> response = new HashMap<>();
+//        response.put("orderId", order.getOrderId());
+//        response.put("orderDate", order.getOrderDate());
+//        response.put("status", order.getStatus());
+//        response.put("user", Map.of("id", order.getUser().getId(), "First name", order.getUser().getFirstname()));
+//        response.put("paymentType", order.getPayment().getPaymentType()); // Fetch from Payment table
+//
+//        return ResponseEntity.ok(response);
+
+        return order != null ? ResponseEntity.ok(order) : ResponseEntity.notFound().build();
+    }
+
 
 }
 

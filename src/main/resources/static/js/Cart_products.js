@@ -56,36 +56,7 @@ async function checkout() {
             alert("Your cart is empty. Please add items to the cart before proceeding.");
             return;
         }
-
-        // // Step 3: Collect payment and shipping information
-        // const paymentType = document.getElementById('paymentType').value;
-        // const address = document.getElementById('address').value;
-        // const city = document.getElementById('city').value;
-        // const state = document.getElementById('state').value;
-        // const country = document.getElementById('country').value;
-        // const postalCode = document.getElementById('postalCode').value;
-
-        // Validate required fields
-
-
-        // Step 4: Prepare the order data (if needed for the next page)
-        // const orderData = {
-        //     paymentType: paymentType,
-        //     shipping: {
-        //         address: address,
-        //         city: city,
-        //         state: state,
-        //         country: country,
-        //         postalCode: postalCode
-        //     },
-        //     cartItems: cartItems
-        // };
-
-        // Optionally, you can store the data in sessionStorage or localStorage
-        //sessionStorage.setItem('orderData', JSON.stringify(orderData));
-
-        // Step 5: Redirect to the confirm checkout page
-        window.location.href = '/checkout/confirm';  // Change this URL to your actual confirm checkout page URL
+        window.location.href = '/checkout/page';  // Change this URL to your actual confirm checkout page URL
 
     } catch (error) {
         console.error("Checkout error:", error);

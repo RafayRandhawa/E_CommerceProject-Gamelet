@@ -1,5 +1,5 @@
 
-function submitCheckout() {
+async function submitCheckout() {
     // Get the values from the form
     const paymentType = document.getElementById("paymentType").value;
     const amount = async () => {
@@ -7,15 +7,21 @@ function submitCheckout() {
         if (response.ok) {
             // Wait for the response body to be parsed as JSON
             const data = await response.json();
-            return data.payment.amount;  // Assuming the response structure has 'payment' with 'amount'
+            //return data.payment.amount;  // Assuming the response structure has 'payment' with 'amount'
+            let amount = 0;
+            data.cartItems.forEach(item => {
+                    amount += item.totalPrice;
+                }
+            )
+            return amount;
         } else {
             alert("Checkout failed");
             return null;  // Return null or any value that makes sense in case of failure
         }
     }
 
-
-
+    const checkoutAmount = await amount();
+    console.log("Amount " + checkoutAmount);
     const address = document.getElementById("address").value;
     const city = document.getElementById("city").value;
     const state = document.getElementById("state").value;
@@ -31,7 +37,7 @@ function submitCheckout() {
     // Create the payment and shipping objects
     const payment = {
         paymentType: paymentType,
-        amount: amount
+        amount: checkoutAmount
     };
 
     const shipping = {
@@ -44,7 +50,7 @@ function submitCheckout() {
 
     // Create the order object, including the user and payment & shipping data
     const order = {
-        user: { id: userId },
+        user: {id: userId},
         payment: payment,
         shipping: shipping
     };

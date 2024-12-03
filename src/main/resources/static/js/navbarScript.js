@@ -117,7 +117,7 @@ async function loadCartItems() {
                         <p>Price: ${item.totalPrice}</p>
                     
                     </div>
-                    <button onclick="deleteCartItem(${item.id})" class="delete-btn">Delete</button>
+                    <button onclick="deleteCartItem(${item.cartItemId})" class="delete-btn">Delete</button>
                     <hr>
                 `;
                 console.log("Adding item to DOM:", itemDiv); // Log each item added
@@ -152,15 +152,17 @@ async function loadCartItems() {
 
 async function deleteCartItem(itemId) {
     try {
-        const response = await fetch(`/cart/items/${itemId}`, {
+        const response = await fetch(`/cart/delete/${itemId}`, {
             method: 'DELETE',
+
         });
 
         if (response.ok) {
             // Remove the item from the UI after successful deletion
             const itemDiv = document.getElementById(`cart-item-${itemId}`);
             if (itemDiv) {
-                itemDiv.remove();
+                itemDiv.remove()
+                await loadCartItems()
             }
             console.log(`Item ${itemId} deleted successfully.`);
         } else {

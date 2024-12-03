@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -48,23 +49,31 @@ public class CartController {
     /**
      * Checkout the cart.
      */
-//    @PostMapping("/checkout")
-//    public String checkout(@SessionAttribute("user") User user) {
-//        Cart cart = cartService.getActiveCart(user);
-//        cart.setActive(false); // Deactivate the cart
-//        cartService.save(cart); // Save updated cart
-//        return "redirect:/checkout-success";
+//    @GetMapping("/checkout")
+//    public ModelAndView checkout(@SessionAttribute("user") User user) {
+//        if (user == null) {
+//            // Redirect to login page if user is not logged in
+//            return new ModelAndView("redirect:/login");
+//        }
+//        ModelAndView modelAndView = new ModelAndView("checkout");
+//        modelAndView.addObject("user", user);
+//        return modelAndView;
 //    }
 
     @GetMapping("/cart")
     public Cart getCart(@SessionAttribute("user") User user) {
         return cartRepository.findByUserId(user.getId());
     }
+
     @GetMapping("/items")
     public List<CartItem> getCartItems() {
         // Retrieve cart items from the database
+        if (sessionService.getAttribute("user")==null){
+            return null;
+        }
         return cartService.getCartItems(((User)sessionService.getAttribute("user")).getId());
     }
+
     @DeleteMapping("/delete/{id}")
     public void deleteCartItem(@PathVariable Long id){
         cartService.deleteCartItem(id);

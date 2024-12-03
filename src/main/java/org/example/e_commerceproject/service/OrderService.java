@@ -52,4 +52,8 @@ public class OrderService {
     public List<Order> getOrdersByUser(int userId) {
         return orderRepository.findByUserId(userId);
     }
+
+    public Order getOrderById(Long id) {
+        return orderRepository.findById(id).orElse(null);
+    }
 }

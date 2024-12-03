@@ -62,9 +62,24 @@
                 <td th:text="${order.orderId}"></td>
                 <td th:text="${order.orderDate}"></td>
                 <td th:text="${order.status}"></td>
+                <td>
+                    <button class="view-order-btn" th:data-order-id="${order.orderId}">View Order</button>
+
+                </td>
             </tr>
             </tbody>
         </table>
+        <div id="order-details-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h3>Order Details</h3>
+                <p><strong>Order ID:</strong> <span id="order-id"></span></p>
+                <p><strong>Order Date:</strong> <span id="order-date"></span></p>
+                <p><strong>Status:</strong> <span id="order-status"></span></p>
+                <p><strong>User:</strong> <span id="order-user"></span></p>
+                <p><strong>Payment Method:</strong> <span id="payment-method"></span></p>
+            </div>
+        </div>
     </div>
 </div>
 

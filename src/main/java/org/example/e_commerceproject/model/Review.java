@@ -13,13 +13,13 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(
-            name = "product_id",
+            name = "order_id",
             foreignKey = @ForeignKey(
-                    name = "fk_product_review",
-                    foreignKeyDefinition = "FOREIGN KEY (product_id) REFERENCES Product(product_id) DEFERRABLE INITIALLY DEFERRED"
+                    name = "fk_order_review",
+                    foreignKeyDefinition = "FOREIGN KEY (order_id) REFERENCES Orders(order_id) DEFERRABLE INITIALLY DEFERRED"
             )
     ) // Matches the primary key in the Product table
-    private Product product;
+    private Order order;
 
     @ManyToOne
     @JoinColumn(
@@ -53,12 +53,12 @@ public class Review {
         this.reviewId = reviewId;
     }
 
-    public Product getProduct() {
-        return product;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public User getUser() {

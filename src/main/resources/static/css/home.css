@@ -400,3 +400,13 @@ footer {
     background-color: #bb0000;
     color:#000000
 }
+
+.checkout-container {
+    width: 50%;
+    margin: auto;
+    padding: 20px;
+}
+
+.section {
+    margin-bottom: 20px;
+}
