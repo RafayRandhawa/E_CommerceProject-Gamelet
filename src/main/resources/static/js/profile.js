@@ -64,3 +64,57 @@ modal.addEventListener('click', (event) => {
         modal.style.display = 'none';
     }
 });
+
+// Feedback Modal Logic
+const feedbackModal = document.getElementById('feedback-modal');
+const closeFeedbackModal = document.querySelector('.close-feedback-modal');
+const feedbackBtn = document.getElementById('feedback-btn');
+let currentOrderId; // To store the selected order ID for feedback
+
+// Open Feedback Modal
+feedbackBtn.addEventListener('click', () => {
+    feedbackModal.style.display = 'flex';
+    currentOrderId = document.getElementById('order-id').innerText; // Get the current order ID
+});
+
+// Close Feedback Modal
+closeFeedbackModal.addEventListener('click', () => {
+    feedbackModal.style.display = 'none';
+});
+
+feedbackModal.addEventListener('click', (event) => {
+    if (event.target === feedbackModal) {
+        feedbackModal.style.display = 'none';
+    }
+});
+
+// Handle Feedback Form Submission
+document.getElementById('feedback-form').addEventListener('submit', async (event) => {
+    event.preventDefault(); // Prevent default form submission
+
+    const feedbackData = {
+        rating: document.getElementById('rating').value,
+        reviewText: document.getElementById('review-text').value,
+        orderId: currentOrderId // Use the order ID for feedback
+    };
+
+    try {
+        const response = await fetch('/profile/submit-feedback', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(feedbackData)
+        });
+
+        if (response.ok) {
+            alert('Feedback submitted successfully!');
+            feedbackModal.style.display = 'none';
+            document.getElementById('feedback-form').reset(); // Clear the form
+        } else {
+            alert('Failed to submit feedback. Please try again.');
+        }
+    } catch (error) {
+        console.error('Error submitting feedback:', error);
+    }
+});

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.example.e_commerceproject.service.SessionService;
 import org.example.e_commerceproject.service.OrderService;
 import org.example.e_commerceproject.service.UserService;
+import org.example.e_commerceproject.service.ReviewService;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -26,11 +27,14 @@ public class ProfileController {
     private final OrderService orderService;
     private final UserService userService;
 
+    private final ReviewService reviewService;
+
     @Autowired
-    public ProfileController(SessionService sessionService, OrderService orderService, UserService userService) {
+    public ProfileController(SessionService sessionService, OrderService orderService, UserService userService, ReviewService reviewService) {
         this.sessionService = sessionService;
         this.orderService = orderService;
         this.userService = userService; // Assuming UserService is injected here as well
+        this.reviewService = reviewService;
     }
 
 
@@ -100,6 +104,31 @@ public class ProfileController {
 //        return ResponseEntity.ok(response);
 
         return order != null ? ResponseEntity.ok(order) : ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/submit-feedback")
+    @ResponseBody
+    public ResponseEntity<String> submitFeedback(@RequestBody Map<String, Object> feedbackData) {
+        try {
+            Long orderId = Long.valueOf(feedbackData.get("orderId").toString());
+            int rating = Integer.parseInt(feedbackData.get("rating").toString());
+            String reviewText = feedbackData.get("reviewText").toString();
+
+            // Ensure the order exists and is linked to the current user
+            Order order = orderService.getOrderById(orderId);
+            if (order == null || !(order.getUser().getId() == ((User)sessionService.getAttribute("user")).getId())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized or invalid order.");
+            }
+
+            // Save the feedback into the Reviews table
+            User user = (User)sessionService.getAttribute("user");
+            reviewService.saveReview(orderId, user, rating, reviewText);
+
+            return ResponseEntity.ok("Feedback submitted successfully!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error submitting feedback.");
+        }
     }
 
 

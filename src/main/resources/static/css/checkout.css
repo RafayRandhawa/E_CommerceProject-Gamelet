@@ -1,0 +1,93 @@
+/* General Body Styles */
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #0f0f0f; /* Deep black background */
+    color: #d4f2d2; /* Soft neon green text */
+    line-height: 1.6;
+}
+
+/* Checkout Container */
+.checkout-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #151515; /* Slightly lighter dark background */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); /* Subtle shadow */
+    animation: fadeInPage 0.8s ease-in-out;
+}
+
+/* Headers */
+.checkout-container h1 {
+    text-align: center;
+    font-size: 2rem;
+    color: #00ff00; /* Neon green */
+    margin-bottom: 20px;
+}
+
+.section h2 {
+    font-size: 1.5rem;
+    color: #00ff00;
+    margin-bottom: 15px;
+}
+
+/* Labels */
+form label {
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 8px;
+    color: #d4f2d2;
+}
+
+/* Inputs and Selects */
+form input[type="text"],
+form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #0f0f0f; /* Dark input background */
+    color: #d4f2d2; /* Neon text */
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+form input[type="text"]:focus,
+form select:focus {
+    border-color: #00ff00; /* Neon green on focus */
+    outline: none;
+}
+
+/* Button Styles */
+button {
+    display: block;
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #0f0f0f; /* Dark text on button */
+    background-color: #00ff00; /* Neon green */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #005500; /* Darker green */
+    transform: scale(1.02);
+}
+
+/* Fade In Animation */
+@keyframes fadeInPage {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

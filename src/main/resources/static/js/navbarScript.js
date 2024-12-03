@@ -198,3 +198,11 @@ document.getElementById('close-cart-btn').addEventListener('click', () => {
 
 updateCartCount();
 
+// Example: Pause/resume the animation when hovering
+document.querySelector('.products-section').addEventListener('mouseover', function() {
+    document.querySelector('.carousel-track').style.animationPlayState = 'paused';
+});
+
+document.querySelector('.products-section').addEventListener('mouseout', function() {
+    document.querySelector('.carousel-track').style.animationPlayState = 'running';
+});

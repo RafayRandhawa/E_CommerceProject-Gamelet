@@ -78,7 +78,25 @@
                 <p><strong>Status:</strong> <span id="order-status"></span></p>
                 <p><strong>User:</strong> <span id="order-user"></span></p>
                 <p><strong>Payment Method:</strong> <span id="payment-method"></span></p>
+                <button id="feedback-btn">Give Feedback</button>
             </div>
+
+        </div>
+    </div>
+
+    <div id="feedback-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-feedback-modal">&times;</span>
+            <h3>Submit Feedback</h3>
+            <form id="feedback-form">
+                <label for="rating">Rating (1-5):</label>
+                <input type="number" id="rating" name="rating" min="1" max="5" required>
+
+                <label for="review-text">Review:</label>
+                <textarea id="review-text" name="reviewText" rows="4" required></textarea>
+
+                <button type="submit">Submit</button>
+            </form>
         </div>
     </div>
 </div>
