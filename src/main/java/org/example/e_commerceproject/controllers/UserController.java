@@ -15,36 +15,6 @@ import java.util.Map;
 
 @Controller
 public class UserController {
-//    @GetMapping("/status")
-//    public ResponseEntity<Map<String, Boolean>> getUserStatus(HttpSession session) {
-//        String username = (String) session.getAttribute("username");
-//        Map<String, Boolean> response = new HashMap<>();
-//
-//        if (username != null && userDAO.isUserLoggedIn(username)) {
-//            response.put("loggedIn", true);
-//        } else {
-//            response.put("loggedIn", false);
-//        }
-//
-//        return ResponseEntity.ok(response);
-//    }
-
-//    @GetMapping("/profile")
-//    public ResponseEntity<Map<String, String>> getUserProfile(HttpSession session) {
-//        String username = (String) session.getAttribute("username");
-//
-//        if (username == null) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-//        }
-//
-//        Map<String, String> profile = userDAO.getUserProfile(username);
-//
-//        if (profile != null) {
-//            return ResponseEntity.ok(profile);
-//        } else {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-//        }
-//    }
 
     @Autowired
     private UserRepository userRepository;

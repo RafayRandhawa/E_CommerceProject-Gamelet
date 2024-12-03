@@ -38,3 +38,102 @@ async function fetchCategories() {
 
 // Call the function when the page loads
 document.addEventListener('DOMContentLoaded', populateCategoriesDropdown);
+
+function logout() {
+    // Make a request to the server to invalidate the session
+    fetch('/home/logout', { method: 'POST' })
+        .then(response => {
+            if (response.ok) {
+                // Refresh the homepage
+                window.location.reload();
+            } else {
+                console.error('Logout failed');
+            }
+        })
+        .catch(error => console.error('Error during logout:', error));
+}
+
+function buyProduct(productId, productName, productPrice, selectedQuantity) {
+    const product = {
+        id: productId,
+        name: productName,
+        price: productPrice,
+        quantity: selectedQuantity
+    };
+
+    addToCart(product); // Add the product to the cart
+}
+
+const cartBtn = document.getElementById("cart-btn");
+document.getElementById("cart-btn").addEventListener("click", toggleCartPopup);
+
+// cartBtn.addEventListener("click", async () => {
+//     console.log("Cart button clicked");
+//
+//     // Toggle the cart popup visibility
+//     cartPopup.classList.toggle("hidden");
+//
+//     // If the popup is now visible, load the cart items
+//     if (!cartPopup.classList.contains("hidden")) {
+//         await loadCartItems();
+//     }
+// });
+
+async function toggleCartPopup() {
+    console.log("Button Clicked")
+    const popup = document.getElementById("cart-popup")
+    if(popup.style.display==="none"){
+        popup.style.display="block";
+        await loadCartItems();
+    }
+    else{
+        popup.style.display="none";
+    }
+}
+
+// Fetch cart items from the server and populate the popup
+async function loadCartItems() {
+    try {
+        const response = await fetch("/cart/items");
+        if (response.ok) {
+            const cartItems = await response.json();
+            const cartItemsContainer = document.getElementById("cart-items");
+            cartItemsContainer.innerHTML = "";
+
+            cartItems.forEach((item) => {
+                const itemDiv = document.createElement("div");
+                itemDiv.classList.add("cart-item");
+                itemDiv.innerHTML = `
+                  
+                    <div class="cart-item-details">
+                        <h4>${item.name}</h4>
+                        <p>Price: ${item.price}</p>
+                        <p>Quantity: ${item.quantity}</p>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(itemDiv);
+            });
+
+        } else {
+            console.error("Failed to load cart items");
+        }
+    } catch (error) {
+        console.error("Error fetching cart items:", error);
+    }
+}
+
+// Call this when toggling the cart popup to ensure updated data
+//document.getElementById("cart-btn").addEventListener("click", loadCartItems);
+// document.addEventListener("DOMContentLoaded", () => {
+//     const cartBtn = document.getElementById("cart-btn");
+//
+//     if (cartBtn) {
+//         cartBtn.addEventListener("click", () => {
+//             //toggleCartPopup();
+//             loadCartItems() // Load items when cart is toggled
+//         });
+//     } else {
+//         console.error("Cart button not found in the DOM.");
+//     }
+// });
+

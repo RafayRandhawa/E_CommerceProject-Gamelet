@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -41,7 +42,9 @@ public class CartService {
      */
     public void addToCart(User user, Product product, int quantity) {
         Cart cart = getOrCreateCart(user);
-
+        if(quantity>product.getStockQuantity()){
+            throw new IllegalArgumentException("Quantity exceeds that which is present in stock");
+        }
         if(!cart.getCartItems().isEmpty()){
             Optional<CartItem> existingItem = cart.getCartItems().stream()
                     .filter(item -> item.getProduct().getProductId().equals(product.getProductId()))
@@ -51,6 +54,9 @@ public class CartService {
                 CartItem cartItem = existingItem.get();
                 cartItem.setQuantity(cartItem.getQuantity() + quantity);
                 cartItem.setTotalPrice(cartItem.getQuantity() * product.getPrice());
+                if(cartItem.getQuantity() + quantity>product.getStockQuantity()){
+                    throw new IllegalArgumentException("Quantity exceeds that which is present in stock");
+                }
                 cartItemRepository.save(cartItem);
             } else {
                 CartItem newItem = new CartItem();
@@ -84,6 +90,10 @@ public class CartService {
 
     public void save(Cart cart) {
         cartRepository.save(cart);
+    }
+
+    public List<CartItem> getCartItems() {
+        return cartItemRepository.findAll(); // Fetch all cart items
     }
 }
 

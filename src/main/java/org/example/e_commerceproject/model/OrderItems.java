@@ -4,28 +4,28 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
-public class CartItem {
+public class OrderItems {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cart_item_seq")
-    @SequenceGenerator(name = "cart_item_seq", sequenceName = "CART_ITEM_SEQ", allocationSize = 1)
-    private Long cartItemId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_item_seq")
+    @SequenceGenerator(name = "order_item_seq", sequenceName = "order_ITEM_SEQ", allocationSize = 1)
+    private Long orderItemId;
 
     @ManyToOne
     @JoinColumn(
-            name = "cart_id",
+            name = "order_id",
             foreignKey = @ForeignKey(
-                    name = "fk_cart_cart_item",
-                    foreignKeyDefinition = "FOREIGN KEY (cart_id) REFERENCES Cart(cart_id) DEFERRABLE INITIALLY DEFERRED"
+                    name = "fk_order_order_item",
+                    foreignKeyDefinition = "FOREIGN KEY (order_id) REFERENCES Orders(order_id) DEFERRABLE INITIALLY DEFERRED"
             )
     )
     @JsonBackReference
-    private Cart cart;
+    private Order order;
 
     @OneToOne
     @JoinColumn(
             name = "product_id",
             foreignKey = @ForeignKey(
-                    name = "fk_product_cart_item",
+                    name = "fk_product_order_item",
                     foreignKeyDefinition = "FOREIGN KEY (product_id) REFERENCES Product(product_id) DEFERRABLE INITIALLY DEFERRED"
             )
     )
@@ -37,20 +37,21 @@ public class CartItem {
 
     // Getters and Setters
 
-    public Long getCartItemId() {
-        return cartItemId;
+
+    public Long getOrderItemId() {
+        return orderItemId;
     }
 
-    public void setCartItemId(Long cartItemId) {
-        this.cartItemId = cartItemId;
+    public Order getOrder() {
+        return order;
     }
 
-    public Cart getCart() {
-        return cart;
+    public void setOrderItemId(Long orderItemId) {
+        this.orderItemId = orderItemId;
     }
 
-    public void setCart(Cart cart) {
-        this.cart = cart;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public Product getProduct() {

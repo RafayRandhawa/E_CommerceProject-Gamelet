@@ -1,8 +1,10 @@
 package org.example.e_commerceproject.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "Orders")
@@ -15,6 +17,9 @@ public class Order {
     private LocalDateTime orderDate;
     @Column(nullable = false)
     private String status;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<OrderItems> orderItems;
 
     @ManyToOne
     @JoinColumn(

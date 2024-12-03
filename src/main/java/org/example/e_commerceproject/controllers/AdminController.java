@@ -43,12 +43,12 @@ public class AdminController {
     }
 
     @PutMapping("/users/{id}")
-    public ModelAndView updateUser (@PathVariable int id, @RequestBody User user) {
+    public void updateUser (@PathVariable int id, @RequestBody User user) {
         User updatedUser  = adminService.updateUser (id, user);
         ResponseEntity.ok(updatedUser );
-        ModelAndView mav = new ModelAndView("adminPanel"); // "my-page" is the name of the HTML file in templates
-        mav.addObject("message", "Hello from RestController!");
-        return mav;
+//        ModelAndView mav = new ModelAndView("adminPanel"); // "my-page" is the name of the HTML file in templates
+//        mav.addObject("message", "Hello from RestController!");
+//        return mav;
     }
 
     @DeleteMapping("/users/{id}")
@@ -198,7 +198,7 @@ public class AdminController {
     }
     @GetMapping("/logout")
     public void logout(HttpSession session) {
-        session.removeAttribute("user");
+        session.invalidate();
     }
 
 }

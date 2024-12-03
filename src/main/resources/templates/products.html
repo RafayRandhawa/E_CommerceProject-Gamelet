@@ -16,7 +16,7 @@
         <p><strong>Price:</strong> $<span th:text="${product.price}"></span></p>
         <form id="add-to-cart" onsubmit="addToCart(event)" >
             <input type="hidden" name="productId" th:value="${product.productId}" />
-            <input type="number" name="quantity" min="1" value="1" />
+            <input type="number" name="quantity" min="1" value="1" th:max="${product.stockQuantity}"/>
             <button type="submit">Buy</button>
         </form>
     </div>

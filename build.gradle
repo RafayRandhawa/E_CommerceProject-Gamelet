@@ -27,6 +27,11 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     implementation files('libs/ojdbc17.jar')
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind' // Core Jackson library
+    implementation 'com.fasterxml.jackson.core:jackson-annotations' // Jackson annotations
+    implementation 'com.fasterxml.jackson.core:jackson-core' // Jackson core functionality
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
     
 }
 
