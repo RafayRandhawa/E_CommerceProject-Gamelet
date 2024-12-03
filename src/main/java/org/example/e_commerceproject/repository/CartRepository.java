@@ -38,4 +38,6 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
     // Find carts by user ID within a specific date range
     //List<Cart> findByUserIdAndCreatedAtBetween(Long userId, LocalDateTime startDate, LocalDateTime endDate);
     Optional<Cart> findByUserAndIsActive(User user, boolean isActive);
+
+    Cart findByUserId(int user_id);
 }

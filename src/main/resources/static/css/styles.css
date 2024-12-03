@@ -430,3 +430,12 @@ input::placeholder,
 textarea::placeholder {
     color: #aaa;
 }
+.checkout-container {
+    width: 50%;
+    margin: auto;
+    padding: 20px;
+}
+
+.section {
+    margin-bottom: 20px;
+}

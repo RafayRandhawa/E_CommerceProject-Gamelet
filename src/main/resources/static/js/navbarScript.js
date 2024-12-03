@@ -82,12 +82,12 @@ document.getElementById("cart-btn").addEventListener("click", toggleCartPopup);
 async function toggleCartPopup() {
     console.log("Button Clicked")
     const popup = document.getElementById("cart-popup")
-    if(popup.style.display==="none"){
-        popup.style.display="block";
+    if(popup.style.display==='none'|| popup.style.display === ''){
+        popup.style.display='block';
         await loadCartItems();
     }
     else{
-        popup.style.display="none";
+        popup.style.display='none';
     }
 }
 
@@ -97,30 +97,43 @@ async function loadCartItems() {
         const response = await fetch("/cart/items");
         if (response.ok) {
             const cartItems = await response.json();
+            console.log("Cart items response:", cartItems); // Log API response
+
             const cartItemsContainer = document.getElementById("cart-items");
-            cartItemsContainer.innerHTML = "";
+            if (!cartItemsContainer) {
+                console.error("Cart items container not found!");
+                return;
+            }
+
+            cartItemsContainer.innerHTML = ""; // Clear previous items
 
             cartItems.forEach((item) => {
                 const itemDiv = document.createElement("div");
-                itemDiv.classList.add("cart-item");
+                itemDiv.classList.add(`cart-item-${item.cartItemId}`);
                 itemDiv.innerHTML = `
-                  
                     <div class="cart-item-details">
-                        <h4>${item.name}</h4>
-                        <p>Price: ${item.price}</p>
-                        <p>Quantity: ${item.quantity}</p>
+                        <h4>${item.product.name}</h4>
+                        <p>Quentity: ${item.quantity}</p>
+                        <p>Price: ${item.totalPrice}</p>
+                    
                     </div>
+                    <button onclick="deleteCartItem(${item.id})" class="delete-btn">Delete</button>
+                    <hr>
                 `;
+                console.log("Adding item to DOM:", itemDiv); // Log each item added
                 cartItemsContainer.appendChild(itemDiv);
+                // Create a line (horizontal rule) after each cart item
+
             });
 
         } else {
-            console.error("Failed to load cart items");
+            console.error("Failed to load cart items, status:", response.status);
         }
     } catch (error) {
         console.error("Error fetching cart items:", error);
     }
 }
+
 
 // Call this when toggling the cart popup to ensure updated data
 //document.getElementById("cart-btn").addEventListener("click", loadCartItems);
@@ -136,4 +149,50 @@ async function loadCartItems() {
 //         console.error("Cart button not found in the DOM.");
 //     }
 // });
+
+async function deleteCartItem(itemId) {
+    try {
+        const response = await fetch(`/cart/items/${itemId}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            // Remove the item from the UI after successful deletion
+            const itemDiv = document.getElementById(`cart-item-${itemId}`);
+            if (itemDiv) {
+                itemDiv.remove();
+            }
+            console.log(`Item ${itemId} deleted successfully.`);
+        } else {
+            console.error(`Failed to delete item ${itemId}, status: ${response.status}`);
+        }
+    } catch (error) {
+        console.error("Error deleting item:", error);
+    }
+}
+async function updateCartCount() {
+    try {
+        // Fetch the cart items from the backend
+        const response = await fetch(`/cart/items`);
+
+        // Check if the request was successful
+        if (response.ok) {
+            // Get the cart items from the response
+            const cartItems = await response.json();
+
+            // Update the cart count display based on the number of items in the cart
+            document.getElementById('cart-count').textContent = cartItems.length;
+        } else {
+            console.error("Failed to fetch cart items");
+        }
+    } catch (error) {
+        console.error("Error fetching cart items:", error);
+    }
+}
+document.getElementById('close-cart-btn').addEventListener('click', () => {
+    const popup = document.getElementById('cart-popup');
+    popup.style.display = 'none'; // Hide the cart popup
+});
+
+updateCartCount();
 

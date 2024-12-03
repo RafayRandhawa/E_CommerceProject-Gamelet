@@ -282,8 +282,8 @@ footer {
     right: 15%;
     width: 400px;
     max-height: 60%;
-    background: #fff;
-    border: 1px solid #ccc;
+    background: #151515;
+    border: 1px solid #000000;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     padding: 20px;
     overflow-y: auto;
@@ -295,6 +295,7 @@ footer {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    color: #00cc00;
 }
 
 .cart-popup-content ul {
@@ -322,8 +323,8 @@ footer {
 
 .close-btn,
 .checkout-btn {
-    background-color: #007bff;
-    color: white;
+    background-color: #000000;
+    color: #1de024;
     border: none;
     border-radius: 5px;
     padding: 10px;
@@ -332,7 +333,8 @@ footer {
 
 .close-btn:hover,
 .checkout-btn:hover {
-    background-color: #0056b3;
+    background-color: #1de024;
+    color: #000000
 }
 
 .cart-popup ul {
@@ -371,11 +373,30 @@ footer {
     position: absolute;
     top: 0;
     right: -5px;
-    background: red;
+    background: #1de024;
     color: white;
     font-size: 12px;
     border-radius: 50%;
     padding: 2px 5px;
     min-width: 16px;
     text-align: center;
+}
+#cart-items hr {
+    border: 0;
+    border-top: 1px solid #1de024; /* Light gray line */
+    margin: 10px 0; /* Space between items and line */
+}
+.delete-btn {
+    background-color: #000000;
+    color: #1de024;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+.delete-btn:hover {
+    background-color: #bb0000;
+    color:#000000
 }

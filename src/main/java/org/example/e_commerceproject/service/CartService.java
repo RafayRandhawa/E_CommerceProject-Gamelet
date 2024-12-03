@@ -92,8 +92,11 @@ public class CartService {
         cartRepository.save(cart);
     }
 
-    public List<CartItem> getCartItems() {
-        return cartItemRepository.findAll(); // Fetch all cart items
+    public List<CartItem> getCartItems(int id) {
+        return cartItemRepository.findByUserId((long) id); // Fetch all cart items
+    }
+    public void deleteCartItem(Long itemId){
+        cartItemRepository.deleteById(itemId);
     }
 }
 
