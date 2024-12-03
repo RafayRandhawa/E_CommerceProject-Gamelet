@@ -88,9 +88,7 @@ public class CartService {
                 .orElseThrow(() -> new IllegalArgumentException("No active cart found for the user."));
     }
 
-    public void save(Cart cart) {
-        cartRepository.save(cart);
-    }
+
 
     public List<CartItem> getCartItems(int id) {
         return cartItemRepository.findByUserId((long) id); // Fetch all cart items

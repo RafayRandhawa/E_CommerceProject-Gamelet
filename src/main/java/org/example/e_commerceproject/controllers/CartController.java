@@ -1,5 +1,6 @@
 package org.example.e_commerceproject.controllers;
 
+import jakarta.transaction.Transactional;
 import org.example.e_commerceproject.model.Cart;
 import org.example.e_commerceproject.model.CartItem;
 import org.example.e_commerceproject.model.Product;
@@ -9,10 +10,7 @@ import org.example.e_commerceproject.service.CartService;
 import org.example.e_commerceproject.service.ProductService;
 import org.example.e_commerceproject.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -46,20 +44,6 @@ public class CartController {
         }
     }
 
-    /**
-     * Checkout the cart.
-     */
-//    @GetMapping("/checkout")
-//    public ModelAndView checkout(@SessionAttribute("user") User user) {
-//        if (user == null) {
-//            // Redirect to login page if user is not logged in
-//            return new ModelAndView("redirect:/login");
-//        }
-//        ModelAndView modelAndView = new ModelAndView("checkout");
-//        modelAndView.addObject("user", user);
-//        return modelAndView;
-//    }
-
     @GetMapping("/cart")
     public Cart getCart(@SessionAttribute("user") User user) {
         return cartRepository.findByUserId(user.getId());
@@ -77,6 +61,11 @@ public class CartController {
     @DeleteMapping("/delete/{id}")
     public void deleteCartItem(@PathVariable Long id){
         cartService.deleteCartItem(id);
+    }
+    @Transactional
+    @DeleteMapping("/clear")
+    public void clearCart(){
+        cartRepository.deleteByUserId(((User) sessionService.getAttribute("user")).getId());
     }
 }
 

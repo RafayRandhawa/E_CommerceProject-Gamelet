@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.example.e_commerceproject.model.*;
 import org.example.e_commerceproject.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,7 +21,8 @@ public class AdminService {
 
     @Autowired
     private OrderRepository orderRepository;
-
+    @Autowired
+    private OrderItemsRepository orderItemsRepository;
     @Autowired
     private ReviewRepository reviewRepository;
 
@@ -162,5 +164,9 @@ public class AdminService {
     }
     public List<Shipping> getAllShippings(){
         return shippingRepository.findAll();
+    }
+
+    public List<OrderItems> getOrderProducts(Long id) {
+        return orderItemsRepository.findByOrder_OrderId(id);
     }
 }

@@ -1,6 +1,7 @@
 package org.example.e_commerceproject.controllers;
 
 import org.example.e_commerceproject.model.*;
+import org.example.e_commerceproject.service.CartService;
 import org.example.e_commerceproject.service.OrderService;
 import org.example.e_commerceproject.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,10 @@ public class OrderController {
     @Autowired
     private SessionService sessionService;
 
+
     @PostMapping("/process")
     public Order checkout(@RequestBody Order order) {
         return orderService.checkout((User)sessionService.getAttribute("user"), order.getPayment(), order.getShipping());
+
     }
 }

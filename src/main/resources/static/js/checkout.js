@@ -56,7 +56,7 @@ async function submitCheckout() {
     };
 
     // Send the POST request to the backend
-    fetch('http://localhost:8085/checkout/process', {
+    await fetch('http://localhost:8085/checkout/process', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -64,10 +64,11 @@ async function submitCheckout() {
         body: JSON.stringify(order)
     })
         .then(response => response.json())
-        .then(data => {
+        .then(async data => {
             console.log("Order placed successfully:", data);
             alert("Order placed successfully!");
-            window.location.href = "/confirmation";  // Redirect to confirmation page
+            await fetch('http://localhost:8085/cart/clear', {method: 'DELETE'});
+            window.location.href = "/home/";  // Redirect to confirmation page
         })
         .catch(error => {
             console.error("Error placing order:", error);

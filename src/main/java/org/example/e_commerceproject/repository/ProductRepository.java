@@ -2,6 +2,7 @@ package org.example.e_commerceproject.repository;
 
 import org.example.e_commerceproject.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -39,4 +40,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     // Find Products Created Before a Specific Date
     List<Product> findByCreatedAtBefore(LocalDateTime date);
+
+
 }

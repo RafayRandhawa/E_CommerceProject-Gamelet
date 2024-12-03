@@ -2,6 +2,7 @@ package org.example.e_commerceproject.controllers;
 
 import jakarta.servlet.http.HttpSession;
 import org.example.e_commerceproject.model.*;
+import org.example.e_commerceproject.repository.OrderItemsRepository;
 import org.example.e_commerceproject.service.AdminService;
 import org.example.e_commerceproject.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ public class AdminController {
     private AdminService adminService;
     @Autowired
     private SessionService sessionService;
+    @Autowired
+    private OrderItemsRepository orderItemsRepository;
 
     // User management endpoints
     @GetMapping("/users")
@@ -125,6 +128,18 @@ public class AdminController {
     public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
         adminService.deleteOrder(id);
         return ResponseEntity.noContent().build();
+    }
+
+    public ResponseEntity<List<OrderItems>> getOrderProducts(@PathVariable Long id) {
+        List<OrderItems> orderItems = orderItemsRepository.findByOrder_OrderId(id);
+
+        if (orderItems.isEmpty()) {
+            // Return 404 Not Found if no items are found
+            return ResponseEntity.notFound().build();
+        }
+
+        // Return 200 OK with the list of order items
+        return ResponseEntity.ok(orderItems);
     }
 
     // Review management endpoints

@@ -196,6 +196,7 @@ async function populateDashboard() {
     const categories = await fetchCategories();
     const reviews = await fetchReviews();
     const shipping = await fetchShippings();
+    const payments = await fetchPayments();
     document.getElementById('total-users').innerText = users.length;
     document.getElementById('total-products').innerText = products.length;
     document.getElementById('total-orders').innerText = orders.length;
@@ -206,6 +207,7 @@ async function populateDashboard() {
     populateCategoriesTable(categories);
     populateShippingTable(shipping);
     populateReviewsTable(reviews);
+    populatePaymentsTable(payments);
 }
 
 function populateUsersTable(users) {
@@ -265,17 +267,25 @@ function populateOrdersTable(orders) {
     const tbody = document.getElementById('orders-table-body');
     tbody.innerHTML = '';
     orders.forEach(order => {
+        const rawDateTime = order.createdAt;
+
+        // Split the date and time
+        const [date, time] = rawDateTime.split("T");
+        const formattedTime = time.split(".")[0]; // Remove nanoseconds, get "23:05:54"
+
+        console.log("Date:", date); // "2024-12-03"
+        console.log("Time:", formattedTime); // "23:05:54"
         const row = `<tr>
-                <td>${order.id}</td>
-                <td>${order.orderDate}</td>
+                <td>${order.orderId}</td>
+                <td>${date}</td>
                 <td>${order.status}</td>
                 <td>${order.user.id}</td>
                 <td>${order.shipping.shippingId}</td>
                 <td>${order.payment.paymentId}</td>
-                <td>${order.createdAt}</td>
+                <td>${formattedTime}</td>
                 <td>
                     <button onclick="cancelOrder(${order.id})">Canecl Order</button>
-                    <!--<button onclick="viewOrder(${order.id})">View Order</button>-->
+                    <button onclick="viewOrder(${order.id})">View Order</button>
                 </td>
             </tr>`;
         tbody.innerHTML += row;
@@ -286,13 +296,16 @@ function populateReviewsTable(reviews) {
     const tbody = document.getElementById('reviews-table-body');
     tbody.innerHTML = '';
     reviews.forEach(review => {
+        const dateElement = review.reviewDate;
+        const rawDate = dateElement.innerText; // e.g., "2024-12-03T23:13:16.268"
+        const formattedDate = new Date(rawDate).toISOString().split('T')[0]; // "YYYY-MM-DD"
         const row = `<tr>
                 <td>${review.reviewId}</td>
                 <td>${review.product.productId}</td>
                 <td>${review.user.id}</td>
                 <td>${review.rating}</td>
                 <td>${review.reviewText}</td>
-                <td>${review.reviewDate}</td>
+                <td>${formattedDate}</td>
                 <td>${review.isApproved}</td>
               
                 <td>
@@ -308,6 +321,11 @@ function populateShippingTable(shippings) {
     const tbody = document.getElementById('shipping-table-body');
     tbody.innerHTML = '';
     shippings.forEach(shipping => {
+        const rawDateTime = shipping.shippingDate;
+
+        // Split the date and time
+        const [date, time] = rawDateTime.split("T");
+        const formattedTime = time.split(".")[0]; // Remove nanoseconds, get "23:05:54"
         const row = `<tr>
                 <td>${shipping.shippingId}</td>
                 <td>${shipping.address}</td>
@@ -315,8 +333,28 @@ function populateShippingTable(shippings) {
                 <td>${shipping.state}</td>
                 <td>${shipping.country}</td>
                 <td>${shipping.postalCode}</td>
-                <td>${shipping.shippingDate}</td>
+                <td>${date}</td>
                 
+            </tr>`;
+        tbody.innerHTML += row;
+    });
+}
+function populatePaymentsTable(payments) {
+    const tbody = document.getElementById('payments-table-body');
+    tbody.innerHTML = '';
+    payments.forEach(payment => {
+        const rawDateTime = payment.paymentDate;
+
+        // Split the date and time
+        const [date, time] = rawDateTime.split("T");
+        const formattedTime = time.split(".")[0]; // Remove nanoseconds, get "23:05:54"
+        const row = `<tr>
+                <td>${payment.paymentId}</td>
+                <td>${payment.paymentType}</td>
+              
+                <td>${date}</td>
+                <td>${payment.amount}</td>
+   
             </tr>`;
         tbody.innerHTML += row;
     });
@@ -778,45 +816,45 @@ async function cancelOrder(order_id) {
         alert('An error occurred while cancelling the order. Please check the console for details.');
     }
 }
-// async function viewOrder(orderId){
-//     const popup = document.getElementById('products-popup');
-//     const productsTableBody = document.getElementById('products-table-body');
-//
-//     // Clear existing product rows
-//     productsTableBody.innerHTML = '';
-//
-//     // Fetch products associated with the order
-//     fetch(`${API_BASE_URL}/orders/${orderId}/products`)
-//         .then(response => {
-//             if (!response.ok) {
-//                 throw new Error('Failed to fetch products');
-//             }
-//             return response.json();
-//         })
-//         .then(products => {
-//             products.forEach(product => {
-//                 const row = document.createElement('tr');
-//                 row.innerHTML = `
-//                     <td>${product.productId}</td>
-//                     <td>${product.name}</td>
-//                     <td>${product.description || 'No description'}</td>
-//                     <td>${product.price}</td>
-//                     <td>${product.stockQuantity}</td>
-//                     <td>${product.category.name}</td>
-//                     <td>${product.createdAt}</td>
-//                     <td>${product.updatedAt}</td>
-//                 `;
-//                 productsTableBody.appendChild(row);
-//             });
-//         })
-//         .catch(error => {
-//             console.error('Error fetching products:', error);
-//             alert('Failed to load products');
-//         });
-//
-//     // Show the popup
-//     popup.classList.remove('hidden');
-// }
+async function viewOrder(orderId){
+    const popup = document.getElementById('products-popup');
+    const productsTableBody = document.getElementById('order-products-table-body');
+
+    // Clear existing product rows
+    productsTableBody.innerHTML = '';
+
+    // Fetch products associated with the order
+    fetch(`${API_BASE_URL}/orders/${orderId}/products`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch products');
+            }
+            return response.json();
+        })
+        .then(orderItems => {
+            orderItems.forEach(orderItem => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${orderItem.product.productId}</td>
+                    <td>${orderItem.product.name}</td>
+                    <td>${orderItem.product.description || 'No description'}</td>
+                    <td>${orderItem.product.price}</td>
+                    <td>${orderItem.product.stockQuantity}</td>
+                    <td>${orderItem.product.category.name}</td>
+                    <td>${orderItem.product.createdAt}</td>
+                    <td>${orderItem.product.updatedAt}</td>
+                `;
+                productsTableBody.appendChild(row);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching products:', error);
+            alert('Failed to load products');
+        });
+
+    // Show the popup
+    popup.classList.remove('hidden');
+}
 
 function closeProductsPopup() {
     const popup = document.getElementById('products-popup');

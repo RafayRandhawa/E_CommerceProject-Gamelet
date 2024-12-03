@@ -1,5 +1,6 @@
 package org.example.e_commerceproject.service;
 
+import jakarta.transaction.Transactional;
 import org.example.e_commerceproject.model.*;
 import org.example.e_commerceproject.repository.CartRepository;
 import org.example.e_commerceproject.repository.OrderRepository;
@@ -21,7 +22,7 @@ public class OrderService {
     private CartRepository cartRepository;
     @Autowired
     private ShippingRepository shippingRepository;
-
+    @Transactional
     public Order checkout(User user, Payment payment, Shipping shipping) {
         // Save the payment information
         payment.setPaymentDate(LocalDateTime.now());

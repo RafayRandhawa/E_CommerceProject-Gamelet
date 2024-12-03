@@ -2,9 +2,11 @@ package org.example.e_commerceproject.repository;
 import org.example.e_commerceproject.model.Cart;
 import org.example.e_commerceproject.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,4 +42,8 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
     Optional<Cart> findByUserAndIsActive(User user, boolean isActive);
 
     Cart findByUserId(int user_id);
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Cart c WHERE c.user.id = :userId")
+    void deleteByUserId(int userId);
 }
