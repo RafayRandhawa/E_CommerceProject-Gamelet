@@ -145,6 +145,7 @@ body {
     flex: 0 0 auto;
     text-align: center;
     padding: 20px;
+
     box-sizing: border-box;
     width: 240px; /* Increase width for less congestion */
     transition: transform 0.3s ease-in-out;
