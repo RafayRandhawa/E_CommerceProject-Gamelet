@@ -96,6 +96,8 @@ public class AdminController {
 
     @DeleteMapping("/products/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+        System.out.println("---------------------------------------------------------------");
+        System.out.println("product to delete has id:  "+id);
         adminService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }

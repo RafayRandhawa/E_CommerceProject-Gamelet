@@ -232,6 +232,7 @@ function populateUsersTable(users) {
 function populateProductsTable(products) {
     const tbody = document.getElementById('products-table-body');
     tbody.innerHTML = '';
+    products.sort((a, b) => a.productId - b.productId);
     products.forEach(product => {
         const row = `<tr>
                 <td>${product.productId}</td>
@@ -239,8 +240,8 @@ function populateProductsTable(products) {
                 <td>$${product.price.toFixed(2)}</td>
                 <td>${product.stockQuantity}</td>
                 <td>
-                    <button onclick="editProductModal(${product.id})">Edit</button>
-                    <button onclick="deleteProduct(${product.id})">Delete</button>
+                    <button onclick="editProductModal(${product.productId})">Edit</button>
+                    <button onclick="deleteProduct(${product.productId})">Delete</button>
                 </td>
             </tr>`;
         tbody.innerHTML += row;
@@ -297,15 +298,14 @@ function populateReviewsTable(reviews) {
     tbody.innerHTML = '';
     reviews.forEach(review => {
         const dateElement = review.reviewDate;
-        const rawDate = dateElement.innerText; // e.g., "2024-12-03T23:13:16.268"
-        const formattedDate = new Date(rawDate).toISOString().split('T')[0]; // "YYYY-MM-DD"
+
         const row = `<tr>
                 <td>${review.reviewId}</td>
-                <td>${review.product.productId}</td>
+                <td>${review.order.orderId}</td>
                 <td>${review.user.id}</td>
                 <td>${review.rating}</td>
                 <td>${review.reviewText}</td>
-                <td>${formattedDate}</td>
+                <td>${dateElement}</td>
                 <td>${review.isApproved}</td>
               
                 <td>
@@ -347,7 +347,7 @@ function populatePaymentsTable(payments) {
 
         // Split the date and time
         const [date, time] = rawDateTime.split("T");
-        const formattedTime = time.split(".")[0]; // Remove nanoseconds, get "23:05:54"
+         // Remove nanoseconds, get "23:05:54"
         const row = `<tr>
                 <td>${payment.paymentId}</td>
                 <td>${payment.paymentType}</td>
@@ -523,7 +523,7 @@ async function editProduct(event){
 
 async function deleteProduct(product_id){
     try {
-        const response = await fetch(`${API_BASE_URL}/users/${product_id}`, {
+        const response = await fetch(`${API_BASE_URL}/products/${product_id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

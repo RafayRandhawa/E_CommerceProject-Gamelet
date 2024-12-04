@@ -171,9 +171,10 @@ body {
     }
 }
 
+
 .carousel-track {
     display: inline-flex;
-    animation: scrollProfessional 50s linear infinite;
+    animation: scrollProfessional 20s linear infinite;
     gap: 20px; /* Add spacing between product cards */
 }
 
